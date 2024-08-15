@@ -1,33 +1,16 @@
-package com.example.mealplanner.RandomMeal;
+package com.example.mealplanner.HomeActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
-import com.example.mealplanner.Authentication.Login.LoginView.LoginActivity;
-import com.example.mealplanner.Model.Meal;
-import com.example.mealplanner.Model.MealResponse;
-import com.example.mealplanner.Model.Repository;
-import com.example.mealplanner.Network.MealsRemoteDataScource;
 import com.example.mealplanner.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 
-public class RandomMealActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mealplanner.Authentication.Login.LoginView.LoginActivity;
 import com.example.mealplanner.Authentication.Registeration.RegisterPresenter.RegisterPresenter;
-import com.example.mealplanner.RandomMeal.RandomMealActivity;
+import com.example.mealplanner.HomeActivity.HomeActivity;
 import com.example.mealplanner.R;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -128,7 +128,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView{
 
     @Override
     public void navigateToMainScreen() {
-        startActivity(new Intent(RegisterActivity.this, RandomMealActivity.class));
+        startActivity(new Intent(RegisterActivity.this, HomeActivity.class));
         finish();
     }
 }

@@ -1,11 +1,10 @@
-package com.example.mealplanner;
+package com.example.mealplanner.HomeActivity.RandomMeal;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -15,16 +14,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.mealplanner.Authentication.Login.LoginView.LoginActivity;
-import com.example.mealplanner.Model.Meal;
-import com.example.mealplanner.Model.MealResponse;
+import com.example.mealplanner.Model.Meal.Meal;
+import com.example.mealplanner.Model.Meal.MealResponse;
 import com.example.mealplanner.Model.Repository;
 import com.example.mealplanner.Network.MealsRemoteDataScource;
-import com.example.mealplanner.RandomMeal.RandomActivityPresenter;
-import com.example.mealplanner.RandomMeal.RandomMealView;
+import com.example.mealplanner.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -41,7 +38,7 @@ public class RandomMealFragment extends Fragment implements RandomMealView {
     TextView mealCategory;
     TextView mealArea;
     TextView mealInstructions;
-    RandomActivityPresenter presenter;
+    RandomMealFragmentPresenter presenter;
     FloatingActionButton logoutBtn;
     Button getAnotherMealBtn;
 
@@ -75,7 +72,7 @@ public class RandomMealFragment extends Fragment implements RandomMealView {
         logoutBtn = view.findViewById(R.id.logoutBtn);
        // getAnotherMealBtn = view.findViewById(R.id.getMealBtn);
 
-        presenter = new RandomActivityPresenter(this, Repository.getInstance(MealsRemoteDataScource.getInstance()));
+        presenter = new RandomMealFragmentPresenter(this, Repository.getInstance(MealsRemoteDataScource.getInstance()));
         presenter.getRandomMeal();
 
         // Initialize Firebase Auth

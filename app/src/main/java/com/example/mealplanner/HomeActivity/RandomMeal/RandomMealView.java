@@ -1,7 +1,6 @@
-package com.example.mealplanner.RandomMeal;
+package com.example.mealplanner.HomeActivity.RandomMeal;
 
-import com.example.mealplanner.Model.Meal;
-import com.example.mealplanner.Model.MealResponse;
+import com.example.mealplanner.Model.Meal.MealResponse;
 
 public interface RandomMealView {
 

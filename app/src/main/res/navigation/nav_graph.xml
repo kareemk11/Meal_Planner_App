@@ -6,7 +6,7 @@
     app:startDestination="@id/randomMealFragment">
     <fragment
         android:id="@+id/randomMealFragment"
-        android:name="com.example.mealplanner.RandomMealFragment"
+        android:name="com.example.mealplanner.HomeActivity.RandomMeal.RandomMealFragment"
         android:label="fragment_random_meal"
         tools:layout="@layout/fragment_random_meal" >
         <action
@@ -33,7 +33,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchMealsFragment"
-        android:name="com.example.mealplanner.SearchMealsFragment"
+        android:name="com.example.mealplanner.HomeActivity.MealSerach.SearchMealsFragment"
         android:label="fragment_search_meals"
         tools:layout="@layout/fragment_search_meals" >
         <action
