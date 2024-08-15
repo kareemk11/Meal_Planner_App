@@ -1,0 +1,31 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.MealPlanner" parent="Theme.Material3.DayNight">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/myColorPrimary</item>
+        <item name="colorPrimaryVariant">@color/myColorPrimaryVariant</item>
+        <item name="colorOnPrimary">@color/myColorOnPrimary</item>
+
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/myColorSecondary</item>
+        <item name="colorOnSecondary">@color/myColorOnSecondary</item>
+
+        <!-- Background and surface colors -->
+        <item name="colorOnBackground">@color/myColorBackground</item>
+        <item name="colorSurface">@color/myColorSurface</item>
+
+        <!-- Text colors -->
+        <item name="android:textColor">@color/myColorPrimaryText</item>
+        <item name="android:textColorSecondary">@color/myColorSecondaryText</item>
+
+        <!-- Divider color -->
+        <item name="android:divider">@color/myColorDivider</item>
+
+        <!-- Icon colors -->
+        <item name="android:tint">@color/myColorIcons</item>
+    </style>
+
+
+    <style name="Theme.MealPlanner" parent="Base.Theme.MealPlanner" />
+</resources>

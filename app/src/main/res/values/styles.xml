@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="myColorPrimary">#657985</color>
+    <color name="myColorPrimaryVariant">#cfd8dc</color>
+    <color name="myColorSecondary">#b3e5fc</color>
+    <color name="myColorOnPrimary">#607d8b</color>
+    <color name="myColorOnSecondary">#FFFFFF</color>
+    <color name="myColorBackground">#FFFFFF</color>
+    <color name="myColorSurface">#009688</color>
+    <color name="myColorPrimaryText">#FFFFFF</color>
+    <color name="myColorSecondaryText">#212121</color>
+    <color name="myColorDivider">#BDBDBD</color>
+    <color name="myColorIcons">#607D8B</color>
+</resources>
