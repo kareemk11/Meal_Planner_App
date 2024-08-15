@@ -54,4 +54,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="mealoftheday">Meal of the Day</string>
+    <string name="searchbyingredients">Search By Ingrediants</string>
+    <string name="searchbycategory">Search By Category</string>
+    <string name="searchbyarea">Search By Area\n</string>
 </resources>

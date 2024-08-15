@@ -81,5 +81,8 @@ dependencies {
     implementation ("com.google.android.material:material:1.9.0")
     implementation("de.hdodenhof:circleimageview:3.1.0")
 
+    // searchable spinner
+    implementation ("com.github.chivorns:smartmaterialspinner:2.0.0")
+
 
 }

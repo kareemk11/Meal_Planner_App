@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".RandomMeal.RandomMealActivity"
+            android:name=".HomeActivity.HomeActivity"
             android:exported="false" />
         <activity
             android:name=".Authentication.Registeration.RegisterView.RegisterActivity"

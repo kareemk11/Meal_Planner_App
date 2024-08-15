@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mealplanner.Authentication.Login.LoginPresenter.LoginPresenter;
 import com.example.mealplanner.Authentication.Registeration.RegisterView.RegisterActivity;
-import com.example.mealplanner.RandomMeal.RandomMealActivity;
+import com.example.mealplanner.HomeActivity.HomeActivity;
 import com.example.mealplanner.R;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            startActivity(new Intent(this, RandomMealActivity.class));
+            startActivity(new Intent(this, HomeActivity.class));
         }
     }
 
@@ -100,7 +100,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
     @Override
     public void navigateToMainScreen() {
-        startActivity(new Intent(LoginActivity.this, RandomMealActivity.class));
+        startActivity(new Intent(LoginActivity.this, HomeActivity.class));
         finish();
 
     }

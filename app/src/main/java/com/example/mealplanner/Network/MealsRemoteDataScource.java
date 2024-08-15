@@ -2,8 +2,10 @@ package com.example.mealplanner.Network;
 
 import android.util.Log;
 
-import com.example.mealplanner.Model.Meal;
-import com.example.mealplanner.Model.MealResponse;
+import com.example.mealplanner.Model.Area.AreaResponse;
+import com.example.mealplanner.Model.Category.CategoryResponse;
+import com.example.mealplanner.Model.Meal.MealResponse;
+import com.example.mealplanner.Network.NetworkListeners.RandomMealNetworkListener;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,7 +36,7 @@ public class MealsRemoteDataScource {
         return instance;
     }
 
-    public void makeNetworkCall(NetworkListener listener) {
+    public void getRandomMeal(RandomMealNetworkListener listener) {
 
 
         Call<MealResponse> call = mealApiService.getRandomMeal();
@@ -61,5 +63,46 @@ public class MealsRemoteDataScource {
             }
         });
 
+    }
+
+    public void getCategories( MealsCategoryNetworkListener listener){
+        Call<CategoryResponse> call = mealApiService.getCategoriesList();
+        call.enqueue(new Callback<CategoryResponse>(){
+            @Override
+            public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
+                Log.i(TAG, "onResponse: "+response.body());
+                listener.onMealsCategorySuccess(response.body().getCategories());
+            }
+
+            @Override
+            public void onFailure(Call<CategoryResponse> call, Throwable t) {
+                listener.onMealsCategoryFailure(t.getMessage());
+            }
+        });
+
+    }
+
+    public void getAreas(AreaNetworkListener listener)
+    {
+        Call <AreaResponse> call = mealApiService.getAreasList();
+        call.enqueue(new Callback<AreaResponse>() {
+            @Override
+            public void onResponse(Call<AreaResponse> call, Response<AreaResponse> response) {
+
+
+                if(response.isSuccessful())
+                {
+                    listener.onAreaSuccess(response.body().getAreas());
+                    Log.i(TAG, "onResponse / areas: "+response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AreaResponse> call, Throwable t) {
+
+                Log.i(TAG, "onFailure / areas: "+t.getMessage());
+                listener.onAreaFailure(t.getMessage());
+            }
+        });
     }
 }

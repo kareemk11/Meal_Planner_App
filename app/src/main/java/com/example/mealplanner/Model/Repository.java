@@ -1,7 +1,9 @@
 package com.example.mealplanner.Model;
 
+import com.example.mealplanner.Network.AreaNetworkListener;
+import com.example.mealplanner.Network.MealsCategoryNetworkListener;
 import com.example.mealplanner.Network.MealsRemoteDataScource;
-import com.example.mealplanner.Network.NetworkListener;
+import com.example.mealplanner.Network.NetworkListeners.RandomMealNetworkListener;
 
 public class Repository {
     private static Repository instance;
@@ -18,8 +20,14 @@ public class Repository {
         }
         return instance;
     }
-    public void getRandomMeal(NetworkListener listener) {
-        mealsRemoteDataScource.makeNetworkCall(listener);
+    public void getRandomMeal(RandomMealNetworkListener listener) {
+        mealsRemoteDataScource.getRandomMeal(listener);
+    }
+    public void getCategories(MealsCategoryNetworkListener listener) {
+        mealsRemoteDataScource.getCategories(listener);
+    }
+    public void getAreas(AreaNetworkListener listener) {
+        mealsRemoteDataScource.getAreas(listener);
     }
 
 }

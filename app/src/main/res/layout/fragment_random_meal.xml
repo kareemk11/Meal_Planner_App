@@ -5,8 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/material_dynamic_secondary50"
-    tools:context=".RandomMeal.RandomMealActivity">
+    android:background="@color/colorPrimary"
+    tools:context=".HomeActivity.HomeActivity">
 
     <!-- Floating Action Button -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton

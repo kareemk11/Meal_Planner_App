@@ -1,26 +1,20 @@
-package com.example.mealplanner.RandomMeal;
+package com.example.mealplanner.HomeActivity.RandomMeal;
 
-import android.content.Intent;
-
-import com.example.mealplanner.Authentication.Login.LoginView.LoginActivity;
-import com.example.mealplanner.Model.CategoryResponse;
-import com.example.mealplanner.Model.Meal;
-import com.example.mealplanner.Model.MealResponse;
+import com.example.mealplanner.Model.Category.CategoryResponse;
+import com.example.mealplanner.Model.Meal.MealResponse;
 import com.example.mealplanner.Model.Repository;
-import com.example.mealplanner.Network.MealsRemoteDataScource;
-import com.example.mealplanner.Network.NetworkListener;
+import com.example.mealplanner.Network.NetworkListeners.RandomMealNetworkListener;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
-import java.util.Random;
 
-public class RandomActivityPresenter implements NetworkListener {
+public class RandomMealFragmentPresenter implements RandomMealNetworkListener {
 
     private Repository repository;
     private RandomMealView view;
     FirebaseAuth mAuth;
 
-    public RandomActivityPresenter(RandomMealView view , Repository repository) {
+    public RandomMealFragmentPresenter(RandomMealView view , Repository repository) {
         this.view = view;
         this.repository = repository;
     }
