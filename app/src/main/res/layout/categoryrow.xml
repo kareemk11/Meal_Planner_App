@@ -16,9 +16,10 @@
 
         <ImageView
             android:id="@+id/categoryThumbnail"
-            android:layout_width="match_parent"
-            android:layout_height="220dp"
+            android:layout_width="363dp"
+            android:layout_height="223dp"
             android:scaleType="centerCrop"
+            app:layout_constraintBottom_toTopOf="@+id/categoryName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -28,7 +29,6 @@
             android:id="@+id/categoryName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:background="@android:drawable/screen_background_dark_transparent"
             android:gravity="center"
             android:padding="10dp"

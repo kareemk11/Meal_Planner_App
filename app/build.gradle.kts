@@ -60,6 +60,7 @@ dependencies {
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
+    implementation(libs.core)
     testImplementation(libs.junit)
     implementation("de.hdodenhof:circleimageview:3.1.0")
     androidTestImplementation(libs.ext.junit)
@@ -83,6 +84,8 @@ dependencies {
 
     // searchable spinner
     implementation ("com.github.chivorns:smartmaterialspinner:2.0.0")
+
+
 
 
 }

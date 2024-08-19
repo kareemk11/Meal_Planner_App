@@ -1,6 +1,5 @@
-package com.example.mealplanner.HomeActivity.RandomMeal;
+package com.example.mealplanner.RandomMeal.View;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,7 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.mealplanner.Authentication.Login.LoginView.LoginActivity;
+import com.example.mealplanner.RandomMeal.Presenter.RandomMealFragmentPresenter;
 import com.example.mealplanner.Model.Meal.Meal;
 import com.example.mealplanner.Model.Meal.MealResponse;
 import com.example.mealplanner.Model.Repository;
@@ -56,7 +55,6 @@ public class RandomMealFragment extends Fragment implements RandomMealView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_random_meal, container, false);
     }
 
@@ -68,18 +66,15 @@ public class RandomMealFragment extends Fragment implements RandomMealView {
         mealName = view.findViewById(R.id.mealName);
         mealCategory = view.findViewById(R.id.mealCategory);
         mealArea = view.findViewById(R.id.mealArea);
-        // mealInstructions = findViewById(R.id.mealInstructions);
-        logoutBtn = view.findViewById(R.id.logoutBtn);
-       // getAnotherMealBtn = view.findViewById(R.id.getMealBtn);
 
         presenter = new RandomMealFragmentPresenter(this, Repository.getInstance(MealsRemoteDataScource.getInstance()));
         presenter.getRandomMeal();
 
-        // Initialize Firebase Auth
+
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
 
-        logoutBtn.setOnClickListener(view1 -> presenter.Logout());
+        //logoutBtn.setOnClickListener(view1 -> presenter.Logout());
 
     }
 
@@ -90,8 +85,6 @@ public class RandomMealFragment extends Fragment implements RandomMealView {
         mealCategory.setText(meal.getCategory());
         mealArea.setText(meal.getArea());
 
-        // Optionally set mealInstructions if you have it
-        // mealInstructions.setText(meal.getInstructions());
 
         Glide.with(this)
                 .load(meal.getThumbnail())
@@ -104,11 +97,5 @@ public class RandomMealFragment extends Fragment implements RandomMealView {
     public void showError(String errorMessage) {
         Log.i(TAG, "showError: ");
     }
-    public void finish()
-    {
-        mAuth.signOut();
-        startActivity(new Intent(getActivity(), LoginActivity.class));
-        getActivity().finish();
 
-    }
 }
