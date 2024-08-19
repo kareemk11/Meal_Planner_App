@@ -6,112 +6,22 @@
     app:startDestination="@id/randomMealFragment">
     <fragment
         android:id="@+id/randomMealFragment"
-        android:name="com.example.mealplanner.HomeActivity.RandomMeal.RandomMealFragment"
+        android:name="com.example.mealplanner.RandomMeal.View.RandomMealFragment"
         android:label="fragment_random_meal"
-        tools:layout="@layout/fragment_random_meal" >
-        <action
-            android:id="@+id/action_randomMealFragment_to_searchMealsFragment"
-            app:destination="@id/searchMealsFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_out"
-            app:popExitAnim="@android:anim/fade_in"/>
-        <action
-            android:id="@+id/action_randomMealFragment_to_mealsForWeakFragment"
-            app:destination="@id/mealsForWeakFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_out"
-            app:popExitAnim="@android:anim/fade_in"/>
-        <action
-            android:id="@+id/action_randomMealFragment_to_savedMealsFragment"
-            app:destination="@id/savedMealsFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_out"
-            app:popExitAnim="@android:anim/fade_in"/>
-    </fragment>
+        tools:layout="@layout/fragment_random_meal" />
     <fragment
         android:id="@+id/searchMealsFragment"
-        android:name="com.example.mealplanner.HomeActivity.MealSerach.SearchMealsFragment"
+        android:name="com.example.mealplanner.MealSerach.View.SearchMealsFragment"
         android:label="fragment_search_meals"
-        tools:layout="@layout/fragment_search_meals" >
-        <action
-            android:id="@+id/action_searchMealsFragment_to_savedMealsFragment"
-            app:destination="@id/savedMealsFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_out"
-            app:popExitAnim="@android:anim/fade_in"/>
-        <action
-            android:id="@+id/action_searchMealsFragment_to_randomMealFragment"
-            app:destination="@id/randomMealFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_out"
-            app:popExitAnim="@android:anim/fade_in"/>
-        <action
-            android:id="@+id/action_searchMealsFragment_to_mealsForWeakFragment"
-            app:destination="@id/mealsForWeakFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_out"
-            app:popExitAnim="@android:anim/fade_in"/>
-    </fragment>
+        tools:layout="@layout/fragment_search_meals" />
     <fragment
         android:id="@+id/savedMealsFragment"
         android:name="com.example.mealplanner.SavedMealsFragment"
         android:label="fragment_saved_meals"
-        tools:layout="@layout/fragment_saved_meals" >
-        <action
-            android:id="@+id/action_savedMealsFragment_to_searchMealsFragment"
-            app:destination="@id/searchMealsFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_out"
-            app:popExitAnim="@android:anim/fade_in"/>
-        <action
-            android:id="@+id/action_savedMealsFragment_to_mealsForWeakFragment"
-            app:destination="@id/mealsForWeakFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_out"
-            app:popExitAnim="@android:anim/fade_in"/>
-        <action
-            android:id="@+id/action_savedMealsFragment_to_randomMealFragment"
-            app:destination="@id/randomMealFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_out"
-            app:popExitAnim="@android:anim/fade_in"/>
-    </fragment>
+        tools:layout="@layout/fragment_saved_meals" />
     <fragment
         android:id="@+id/mealsForWeakFragment"
         android:name="com.example.mealplanner.MealsForWeakFragment"
         android:label="fragment_meals_for_weak"
-        tools:layout="@layout/fragment_meals_for_weak" >
-        <action
-            android:id="@+id/action_mealsForWeakFragment_to_searchMealsFragment"
-            app:destination="@id/searchMealsFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_out"
-            app:popExitAnim="@android:anim/fade_in"/>
-
-        <action
-            android:id="@+id/action_mealsForWeakFragment_to_savedMealsFragment"
-            app:destination="@id/savedMealsFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_out"
-            app:popExitAnim="@android:anim/fade_in"
-            />
-        <action
-            android:id="@+id/action_mealsForWeakFragment_to_randomMealFragment"
-            app:destination="@id/randomMealFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_out"
-            app:popExitAnim="@android:anim/fade_in" />
-    </fragment>
+        tools:layout="@layout/fragment_meals_for_weak" />
 </navigation>

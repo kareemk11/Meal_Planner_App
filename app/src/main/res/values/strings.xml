@@ -57,4 +57,10 @@
     <string name="searchbyingredients">Search By Ingrediants</string>
     <string name="searchbycategory">Search By Category</string>
     <string name="searchbyarea">Search By Area\n</string>
+    <string name="video_tutorial">Video Tutorial</string>
+    <string name="instructions">Instructions</string>
+    <string name="meal_instructions">Meal Instructions</string>
+    <string name="meal_area">Meal Area</string>
+    <string name="meal_category">Meal Category</string>
+    <string name="meal_name">Meal name</string>
 </resources>

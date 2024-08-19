@@ -1,4 +1,4 @@
-package com.example.mealplanner.HomeActivity.MealSerach;
+package com.example.mealplanner.MealSerach.View;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,8 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.example.mealplanner.Model.Category.Category;
 import com.example.mealplanner.R;
@@ -18,10 +21,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     private List<Category> categoryList;
     private Context context;
+    private CategoryAdapterInterface categoryAdapterInterface;
 
-    public CategoryAdapter(List<Category> categoryList, Context context) {
+    public CategoryAdapter(List<Category> categoryList, Context context, CategoryAdapterInterface categoryAdapterInterface) {
         this.categoryList = categoryList;
         this.context = context;
+        this.categoryAdapterInterface = categoryAdapterInterface;
     }
 
     @NonNull
@@ -42,28 +47,37 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         return categoryList.size();
     }
 
+    public void setCategoryList(List<Category> categoryList) {
+        this.categoryList = categoryList;
+        notifyDataSetChanged();
+    }
+
     class CategoryViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView categoryImageView;
         private TextView categoryNameTextView;
-        private TextView categoryDescriptionTextView;
+        private CardView categoryCard;
 
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
             categoryImageView = itemView.findViewById(R.id.categoryThumbnail);
             categoryNameTextView = itemView.findViewById(R.id.categoryName);
+            categoryCard = itemView.findViewById(R.id.categoryCard);
         }
 
         public void bind(Category category) {
             categoryNameTextView.setText(category.getStrCategory());
+            categoryCard.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    categoryAdapterInterface.onCategoryClick(category.getStrCategory());
+                }
+            });
             Glide.with(context)
                     .load(category.getStrCategoryThumb())
                     .into(categoryImageView);
         }
-    }
-    public void setCategoryList(List<Category> categoryList) {
-        this.categoryList = categoryList;
-        notifyDataSetChanged();
     }
 }
 

@@ -1,7 +1,7 @@
 package com.example.mealplanner.Network;
 import com.example.mealplanner.Model.Area.AreaResponse;
 import com.example.mealplanner.Model.Category.CategoryResponse;
-import com.example.mealplanner.Model.IngredientResponse;
+import com.example.mealplanner.Model.Ingredient.IngredientResponse;
 import com.example.mealplanner.Model.Meal.MealResponse;
 
 import retrofit2.Call;
@@ -16,7 +16,7 @@ public interface MealApiService {
 
     // Search for meals by name
     @GET("search.php")
-    Call<MealResponse> searchMeals(@Query("s") String mealName);
+    Call<MealResponse> getMealsByName(@Query("s") String mealName);
 
     // List all meals by the first letter
     @GET("search.php")

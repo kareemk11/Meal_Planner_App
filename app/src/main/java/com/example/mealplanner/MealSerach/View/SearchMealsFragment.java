@@ -1,4 +1,4 @@
-package com.example.mealplanner.HomeActivity.MealSerach;
+package com.example.mealplanner.MealSerach.View;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,14 +17,15 @@ import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.chivorn.smartmaterialspinner.SmartMaterialSpinner;
-import com.example.mealplanner.Authentication.Login.LoginView.LoginActivity;
+import com.example.mealplanner.ListedMeals.View.ListedMealsActivity;
+import com.example.mealplanner.MealSerach.Presenter.SearchMealsPresenter;
 import com.example.mealplanner.Model.Area.Area;
 import com.example.mealplanner.Model.Category.Category;
+import com.example.mealplanner.Model.Ingredient.Ingredient;
 import com.example.mealplanner.Model.Repository;
 import com.example.mealplanner.Network.MealsRemoteDataScource;
 import com.example.mealplanner.R;
 import com.google.android.gms.auth.api.identity.SignInClient;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 
 
@@ -32,16 +33,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class SearchMealsFragment extends Fragment implements SearchMealsView {
+public class SearchMealsFragment extends Fragment implements SearchMealsView, CategoryAdapterInterface {
 
-    FloatingActionButton logoutBtn;
+
     RecyclerView categoryRecyclerView;
     LinearLayoutManager linearLayoutManager;
     CategoryAdapter categoryAdapter;
     List<Category> categories;
     List<Area> areas;
-    private SmartMaterialSpinner<String> spProvince;
-    private List<String> provinceList;
+    private SmartMaterialSpinner<String> smartSpinnerArea;
+    private SmartMaterialSpinner<String> smartSpinnerIngredient;
+    private List<String> areaList;
+    private List<String> ingredientList;
     SearchMealsPresenter presenter;
 
 
@@ -60,33 +63,46 @@ public class SearchMealsFragment extends Fragment implements SearchMealsView {
         linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         categoryRecyclerView.setLayoutManager(linearLayoutManager);
-        categoryAdapter = new CategoryAdapter(categories, getContext());
+        categoryAdapter = new CategoryAdapter(categories, getActivity(),this);
         categoryRecyclerView.setAdapter(categoryAdapter);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
          presenter =
                 new SearchMealsPresenter(Repository.getInstance(MealsRemoteDataScource.getInstance()), this);
         presenter.getCategories();
         presenter.getAreas();
-        presenter.getAreas();
+        presenter.getIngredients();
         initSpinner(view);
-        logoutBtn = view.findViewById(R.id.logoutBtn);
-        logoutBtn.setOnClickListener(view1 -> presenter.Logout());
-
     }
 
     private void initSpinner(View view) {
-        spProvince = view.findViewById(R.id.sp_provinces);
-        provinceList = new ArrayList<>();
-        spProvince.setItem(provinceList);
-
-        spProvince.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        smartSpinnerArea = view.findViewById(R.id.areaSearch);
+        smartSpinnerIngredient = view.findViewById(R.id.ingredientSearch);
+        areaList = new ArrayList<>();
+        ingredientList = new ArrayList<>();
+        smartSpinnerArea.setItem(areaList);
+        smartSpinnerIngredient.setItem(ingredientList);
+        smartSpinnerArea.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                Toast.makeText(getContext(), provinceList.get(position), Toast.LENGTH_SHORT).show();
+                presenter.itemGotSelected( "area",  areaList.get(position));
+                smartSpinnerArea.clearSelection();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+        smartSpinnerIngredient.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                presenter.itemGotSelected("ingredient", ingredientList.get(i));
+                smartSpinnerIngredient.clearSelection();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
     }
@@ -99,6 +115,16 @@ public class SearchMealsFragment extends Fragment implements SearchMealsView {
     }
 
     @Override
+    public void showIngredients(List<Ingredient> ingredients) {
+        for(int i = 0; i < ingredients.size(); i++)
+        {
+            ingredientList.add(ingredients.get(i).getStrIngredient());
+
+        }
+        smartSpinnerIngredient.setItem(ingredientList);
+    }
+
+    @Override
     public void showError(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
@@ -108,17 +134,18 @@ public class SearchMealsFragment extends Fragment implements SearchMealsView {
     @Override
     public void showAreas(List<Area> areas) {
         for (int i = 0; i < areas.size(); i++) {
-            provinceList.add(areas.get(i).getStrArea());
+            areaList.add(areas.get(i).getStrArea());
         }
-        spProvince.setItem(provinceList);
+        smartSpinnerArea.setItem(areaList);
     }
 
-    @Override
-    public void finish() {
 
-        mAuth.signOut();
-        startActivity(new Intent(getActivity(), LoginActivity.class));
-        getActivity().finish();
+    @Override
+    public void navigateToListedMeals(String type , String name) {
+        Intent intent = new Intent(getActivity(), ListedMealsActivity.class);
+        intent.putExtra("type", type);
+        intent.putExtra("name", name);
+        startActivity(intent);
     }
 
     public SearchMealsFragment() {
@@ -139,4 +166,8 @@ public class SearchMealsFragment extends Fragment implements SearchMealsView {
         return inflater.inflate(R.layout.fragment_search_meals, container, false);
     }
 
+    @Override
+    public void onCategoryClick(String categoryName) {
+        presenter.itemGotSelected("category", categoryName);
+    }
 }
