@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mealplanner.Authentication.Login.LoginPresenter.LoginPresenter;
@@ -41,26 +42,28 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     private FirebaseAuth mAuth;
     private LoginPresenter loginPresenter;
     UserSession userSession;
+    FirebaseAuth.AuthStateListener authStateListener;
+    FirebaseUser currentUser;
 
     @Override
     public void onStart() {
         super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        mAuth.addAuthStateListener(authStateListener);
 
-        User user = new User();
-        user.setEmail(currentUser.getEmail());
-        user.setUsername(currentUser.getDisplayName());
-        user.setUserId(currentUser.getUid());
-        user.setGoogleUserId("");
-        Repository.getInstance(MealsRemoteDataScource.getInstance(),
-                MealsLocalDataSource.getInstance(this)).insertUser(user);
-        userSession = UserSession.getInstance();
-        userSession.setUid(currentUser.getUid());
-        userSession.setEmail(currentUser.getEmail());
-        userSession.setUsername(currentUser.getDisplayName());
-        Log.i(TAG, "onStart: "+userSession.getUid());
+        // Check if the user is already signed in when the activity starts
+        currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            startActivity(new Intent(this, HomeActivity.class));
+            // If the user is already signed in, navigate to HomeActivity
+            loginUserAndNavigate(currentUser);
+        }
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (authStateListener != null) {
+            mAuth.removeAuthStateListener(authStateListener);
         }
     }
 
@@ -69,6 +72,18 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
+
+        // Setup the AuthStateListener early
+        authStateListener = firebaseAuth -> {
+            currentUser = firebaseAuth.getCurrentUser();
+            if (currentUser != null) {
+                // User is signed in, log in the user and navigate to HomeActivity
+                loginUserAndNavigate(currentUser);
+            } else {
+                // User is signed out, stay on LoginActivity
+                Log.d(TAG, "No user is signed in");
+            }
+        };
         setContentView(R.layout.activity_login);
         emailTxt = findViewById(R.id.emailTxt);
         passTxt = findViewById(R.id.passTxt);
@@ -135,5 +150,28 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         loginPresenter.handleSignInResult(requestCode, data);
+    }
+
+    private void loginUserAndNavigate(FirebaseUser currentUser) {
+        User user = new User();
+        user.setEmail(currentUser.getEmail());
+        user.setUsername(currentUser.getDisplayName());
+        user.setUserId(currentUser.getUid());
+        user.setGoogleUserId(currentUser.getProviderId());
+
+        // Store user session data
+        userSession = UserSession.getInstance();
+        userSession.setUid(currentUser.getUid());
+        userSession.setEmail(currentUser.getEmail());
+        userSession.setUsername(currentUser.getDisplayName());
+
+        // Insert user data into the database
+        Repository.getInstance(MealsRemoteDataScource.getInstance(),
+                MealsLocalDataSource.getInstance(getApplicationContext())).insertUser(user);
+
+        // Navigate to the home activity
+        Intent homeIntent = new Intent(this, HomeActivity.class);
+        startActivity(homeIntent);
+        finish();
     }
 }

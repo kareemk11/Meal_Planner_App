@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -11,12 +12,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mealplanner.Authentication.Login.LoginView.LoginActivity;
 import com.example.mealplanner.Authentication.Registeration.RegisterPresenter.RegisterPresenter;
+import com.example.mealplanner.Database.MealsLocalDataSource;
+import com.example.mealplanner.Database.Model.User.User;
 import com.example.mealplanner.HomeActivity.HomeActivity;
+import com.example.mealplanner.Model.Repository;
 import com.example.mealplanner.Model.UserSession;
+import com.example.mealplanner.Network.MealsRemoteDataScource;
 import com.example.mealplanner.R;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -27,6 +33,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class RegisterActivity extends AppCompatActivity implements RegisterView{
 
     private static final int RC_SIGN_IN = 9001;
+    private static final String TAG = "EmailPassword";
     TextInputEditText emailTxt;
     TextInputEditText passTxt;
     TextInputEditText confirmPassTxt;
@@ -41,6 +48,8 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView{
     private GoogleSignInClient mGoogleSignInClient;
     private GoogleSignInOptions gso;
     UserSession userSession;
+    FirebaseAuth.AuthStateListener authStateListener;
+    FirebaseUser currentUser;
 
 
 
@@ -50,6 +59,28 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView{
 
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
+        authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                currentUser = firebaseAuth.getCurrentUser();
+                if (currentUser != null) {
+
+                    User user = new User();
+                    user.setEmail(currentUser.getEmail());
+                    user.setUsername(currentUser.getDisplayName());
+                    user.setUserId(currentUser.getUid());
+                    user.setGoogleUserId(currentUser.getProviderId());
+
+                    userSession = UserSession.getInstance();
+                    userSession.setUid(currentUser.getUid());
+                    userSession.setEmail(currentUser.getEmail());
+                    userSession.setUsername(currentUser.getDisplayName());
+
+                    Repository.getInstance(MealsRemoteDataScource.getInstance(),
+                            MealsLocalDataSource.getInstance(getApplicationContext())).insertUser(user);
+                }
+            }
+        };
         registerPresenter = new RegisterPresenter(this , this);
         setContentView(R.layout.activity_register);
 
@@ -104,18 +135,13 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView{
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        mAuth.addAuthStateListener(authStateListener);
 
-
-
-        userSession = UserSession.getInstance();
-        userSession.setUid(currentUser.getUid());
-        userSession.setEmail(currentUser.getEmail());
-        userSession.setUsername(currentUser.getDisplayName());
         if (currentUser != null) {
-            startActivity(new Intent(this, LoginActivity.class));
+            startActivity(new Intent(this, HomeActivity.class));
             finish();
         }
+
     }
 
     @Override
