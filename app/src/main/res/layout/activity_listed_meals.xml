@@ -9,7 +9,7 @@
     tools:context=".ListedMeals.View.ListedMealsActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/mealsRecyclerView"
+        android:id="@+id/favouriteMealsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="1dp"

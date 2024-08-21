@@ -1,4 +1,4 @@
-package com.example.mealplanner.Model.Ingredient;
+package com.example.mealplanner.Network.Model.Ingredient;
 
 import java.util.List;
 

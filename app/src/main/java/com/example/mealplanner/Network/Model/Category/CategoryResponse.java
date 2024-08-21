@@ -1,4 +1,4 @@
-package com.example.mealplanner.Model.Category;
+package com.example.mealplanner.Network.Model.Category;
 
 import java.util.List;
 

@@ -1,7 +1,8 @@
 package com.example.mealplanner.RandomMeal.Presenter;
 
+import com.example.mealplanner.Network.Model.Meal.Meal;
 import com.example.mealplanner.RandomMeal.View.RandomMealView;
-import com.example.mealplanner.Model.Meal.MealResponse;
+import com.example.mealplanner.Network.Model.Meal.MealResponse;
 import com.example.mealplanner.Model.Repository;
 import com.example.mealplanner.Network.NetworkListeners.RandomMealNetworkListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,6 +33,14 @@ public class RandomMealFragmentPresenter implements RandomMealNetworkListener {
         view.showError(errorMessage);
 
     }
+
+    public void onCardClick(Meal meal) {
+
+        view.navigateToMealActivity(meal);
+
+    }
+
+
 
 
 

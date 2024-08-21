@@ -2,12 +2,12 @@ package com.example.mealplanner.Network;
 
 import android.util.Log;
 
-import com.example.mealplanner.Model.Area.AreaResponse;
-import com.example.mealplanner.Model.Category.CategoryResponse;
-import com.example.mealplanner.Model.Ingredient.IngredientResponse;
+import com.example.mealplanner.Network.Model.Area.AreaResponse;
+import com.example.mealplanner.Network.Model.Category.CategoryResponse;
+import com.example.mealplanner.Network.Model.Ingredient.IngredientResponse;
 import com.example.mealplanner.Network.NetworkListeners.MealDetailsNetworkListener;
 import com.example.mealplanner.Network.NetworkListeners.SearchCategory.IngredientsNetworkListener;
-import com.example.mealplanner.Model.Meal.MealResponse;
+import com.example.mealplanner.Network.Model.Meal.MealResponse;
 import com.example.mealplanner.Network.NetworkListeners.SearchCategory.AreaNetworkListener;
 import com.example.mealplanner.Network.NetworkListeners.ListedMeals.MealsByAreaNetworkListener;
 import com.example.mealplanner.Network.NetworkListeners.ListedMeals.MealsByCategoryNetworkListener;

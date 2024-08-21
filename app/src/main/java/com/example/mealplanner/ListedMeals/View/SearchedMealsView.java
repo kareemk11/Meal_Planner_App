@@ -1,6 +1,6 @@
 package com.example.mealplanner.ListedMeals.View;
 
-import com.example.mealplanner.Model.Meal.Meal;
+import com.example.mealplanner.Network.Model.Meal.Meal;
 
 import java.util.List;
 

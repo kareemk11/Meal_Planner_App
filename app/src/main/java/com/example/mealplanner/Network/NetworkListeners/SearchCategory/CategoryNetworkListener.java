@@ -1,6 +1,6 @@
 package com.example.mealplanner.Network.NetworkListeners.SearchCategory;
 
-import com.example.mealplanner.Model.Category.Category;
+import com.example.mealplanner.Network.Model.Category.Category;
 
 import java.util.List;
 

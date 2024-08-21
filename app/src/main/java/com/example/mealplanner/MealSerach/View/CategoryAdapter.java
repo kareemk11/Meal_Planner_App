@@ -12,7 +12,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.mealplanner.Model.Category.Category;
+import com.example.mealplanner.Network.Model.Category.Category;
 import com.example.mealplanner.R;
 
 import java.util.List;

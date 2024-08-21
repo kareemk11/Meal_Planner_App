@@ -1,8 +1,8 @@
 package com.example.mealplanner.MealSerach.View;
 
-import com.example.mealplanner.Model.Area.Area;
-import com.example.mealplanner.Model.Category.Category;
-import com.example.mealplanner.Model.Ingredient.Ingredient;
+import com.example.mealplanner.Network.Model.Area.Area;
+import com.example.mealplanner.Network.Model.Category.Category;
+import com.example.mealplanner.Network.Model.Ingredient.Ingredient;
 
 import java.util.List;
 

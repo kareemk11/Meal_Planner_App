@@ -1,5 +1,12 @@
 package com.example.mealplanner.Model;
 
+import androidx.lifecycle.LiveData;
+
+import com.example.mealplanner.Database.MealsLocalDataSource;
+import com.example.mealplanner.Database.Model.Favourite.FavouriteMeal;
+import com.example.mealplanner.Database.Model.LocalMeal.LocalMeal;
+import com.example.mealplanner.Database.Model.MealDate.MealDate;
+import com.example.mealplanner.Database.Model.User.User;
 import com.example.mealplanner.Network.NetworkListeners.MealDetailsNetworkListener;
 import com.example.mealplanner.Network.NetworkListeners.ListedMeals.MealsByAreaNetworkListener;
 import com.example.mealplanner.Network.NetworkListeners.SearchCategory.AreaNetworkListener;
@@ -10,18 +17,22 @@ import com.example.mealplanner.Network.NetworkListeners.ListedMeals.MealsByCateg
 import com.example.mealplanner.Network.NetworkListeners.ListedMeals.MealsByMainIngredientNetworkListener;
 import com.example.mealplanner.Network.NetworkListeners.RandomMealNetworkListener;
 
+import java.util.List;
+
 public class Repository {
     private static Repository instance;
     private MealsRemoteDataScource mealsRemoteDataScource;
+    private MealsLocalDataSource mealsLocalDataSource;
 
 
-    private Repository(MealsRemoteDataScource mealsRemoteDataScourcec) {
-        this.mealsRemoteDataScource = mealsRemoteDataScourcec;
+    private Repository(MealsRemoteDataScource mealsRemoteDataScource, MealsLocalDataSource mealsLocalDataSource) {
+        this.mealsRemoteDataScource = mealsRemoteDataScource;
+        this.mealsLocalDataSource = mealsLocalDataSource;
     }
 
-    public static Repository getInstance(MealsRemoteDataScource mealsRemoteDataScource) {
+    public static Repository getInstance(MealsRemoteDataScource mealsRemoteDataScource, MealsLocalDataSource mealsLocalDataSource) {
         if (instance == null) {
-            instance = new Repository(mealsRemoteDataScource);
+            instance = new Repository(mealsRemoteDataScource, mealsLocalDataSource);
         }
         return instance;
     }
@@ -49,5 +60,36 @@ public class Repository {
     public void getMealDetails(String mealId, MealDetailsNetworkListener listener) {
         mealsRemoteDataScource.getMealDetails(mealId,listener);
     }
+    public void insertUser(User user) {
+         mealsLocalDataSource.insertUser(user);
+    }
+    public void insertMeal(LocalMeal meal) {
+        mealsLocalDataSource.insertMeal(meal);
+    }
+    public void deleteMeal(LocalMeal meal) {
+        mealsLocalDataSource.deleteMeal(meal);
+    }
+    public void insertFavoriteMeal(FavouriteMeal favorite,LocalMeal meal) {
+        mealsLocalDataSource.insertFavorite(favorite,meal);
+    }
+    public void deleteFavorite(LocalMeal favorite) {
+        mealsLocalDataSource.deleteFavorite(favorite);
+    }
 
+    public LiveData<List<FavouriteMeal>> getSavedMeals(String userId) {
+        return mealsLocalDataSource.getFavoritesByUserId(userId);
+    }
+    public LiveData<LocalMeal> getMealById(String mealId) {
+        return mealsLocalDataSource.getMealById(mealId);
+    }
+
+    public void insertMealDate(MealDate mealDate, LocalMeal localMeal) {
+        mealsLocalDataSource.insertMealDate(mealDate, localMeal);
+    }
+    public void deleteMealDate(LocalMeal mealDate) {
+        mealsLocalDataSource.deleteMealDate(mealDate);
+    }
+    public LiveData<List<MealDate>> getDatedMealsByUserId(String userId) {
+        return mealsLocalDataSource.getDatedMealsByUserId(userId);
+    }
 }

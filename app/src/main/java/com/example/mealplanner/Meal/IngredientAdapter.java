@@ -8,7 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mealplanner.Model.Meal.IngredientOfMeal;
+import com.example.mealplanner.Network.Model.Meal.IngredientOfMeal;
 import com.example.mealplanner.R;
 
 import java.util.List;

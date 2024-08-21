@@ -16,12 +16,12 @@
         tools:layout="@layout/fragment_search_meals" />
     <fragment
         android:id="@+id/savedMealsFragment"
-        android:name="com.example.mealplanner.SavedMealsFragment"
+        android:name="com.example.mealplanner.SavedMeals.SavedMealsFragment"
         android:label="fragment_saved_meals"
         tools:layout="@layout/fragment_saved_meals" />
     <fragment
         android:id="@+id/mealsForWeakFragment"
-        android:name="com.example.mealplanner.MealsForWeakFragment"
+        android:name="com.example.mealplanner.MealsPlan.MealsPlanFragment"
         android:label="fragment_meals_for_weak"
-        tools:layout="@layout/fragment_meals_for_weak" />
+        tools:layout="@layout/fragment_meals_plan" />
 </navigation>

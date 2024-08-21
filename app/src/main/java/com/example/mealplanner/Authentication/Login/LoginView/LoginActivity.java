@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -15,7 +16,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mealplanner.Authentication.Login.LoginPresenter.LoginPresenter;
 import com.example.mealplanner.Authentication.Registeration.RegisterView.RegisterActivity;
+import com.example.mealplanner.Database.MealsLocalDataSource;
+import com.example.mealplanner.Database.Model.User.User;
 import com.example.mealplanner.HomeActivity.HomeActivity;
+import com.example.mealplanner.Model.Repository;
+import com.example.mealplanner.Model.UserSession;
+import com.example.mealplanner.Network.MealsRemoteDataScource;
 import com.example.mealplanner.R;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,11 +40,25 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     ImageView facebook_image;
     private FirebaseAuth mAuth;
     private LoginPresenter loginPresenter;
+    UserSession userSession;
 
     @Override
     public void onStart() {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        User user = new User();
+        user.setEmail(currentUser.getEmail());
+        user.setUsername(currentUser.getDisplayName());
+        user.setUserId(currentUser.getUid());
+        user.setGoogleUserId("");
+        Repository.getInstance(MealsRemoteDataScource.getInstance(),
+                MealsLocalDataSource.getInstance(this)).insertUser(user);
+        userSession = UserSession.getInstance();
+        userSession.setUid(currentUser.getUid());
+        userSession.setEmail(currentUser.getEmail());
+        userSession.setUsername(currentUser.getDisplayName());
+        Log.i(TAG, "onStart: "+userSession.getUid());
         if (currentUser != null) {
             startActivity(new Intent(this, HomeActivity.class));
         }

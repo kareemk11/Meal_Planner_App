@@ -11,4 +11,33 @@
     <color name="myColorSecondaryText">#212121</color>
     <color name="myColorDivider">#BDBDBD</color>
     <color name="myColorIcons">#607D8B</color>
+
+    <style name="CustomDatePickerTheme" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+
+        <item name="colorPrimary">@color/myColorOnPrimary</item>
+        <item name="colorPrimaryVariant">@color/myColorPrimaryVariant</item>
+        <item name="colorOnPrimary">@color/myColorDivider</item>
+        <item name="materialCalendarFullscreenTheme">@style/CustomDatePickerTheme</item>
+        <item name="materialCalendarStyle">@style/CustomCalendarStyle</item>
+    </style>
+
+    <style name="CustomCalendarStyle" parent="Widget.MaterialComponents.MaterialCalendar">
+        <item name="daySelectedStyle">@style/CustomDaySelectedStyle</item>
+        <item name="dayTodayStyle">@style/CustomDayTodayStyle</item>
+        <item name="dayStyle">@style/CustomDayStyle</item>
+    </style>
+
+    <style name="CustomDaySelectedStyle" parent="Widget.MaterialComponents.MaterialCalendar.Day.Selected">
+        <item name="android:background">@drawable/custom_day_selected_background</item>
+        <item name="android:textColor">@color/myColorPrimaryText</item>
+    </style>
+
+    <style name="CustomDayTodayStyle" parent="Widget.MaterialComponents.MaterialCalendar.Day.Today">
+        <item name="android:background">@color/myColorPrimaryVariant</item>
+        <item name="android:textColor">@color/myColorPrimaryText</item>
+    </style>
+
+    <style name="CustomDayStyle" parent="Widget.MaterialComponents.MaterialCalendar.Day">
+        <item name="android:textColor">@color/myColorSecondaryText</item>
+    </style>
 </resources>

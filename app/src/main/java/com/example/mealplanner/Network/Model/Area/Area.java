@@ -1,4 +1,4 @@
-package com.example.mealplanner.Model.Area;
+package com.example.mealplanner.Network.Model.Area;
 
 import com.google.gson.annotations.SerializedName;
 

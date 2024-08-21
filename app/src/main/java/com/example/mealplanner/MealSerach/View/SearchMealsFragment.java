@@ -17,11 +17,12 @@ import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.chivorn.smartmaterialspinner.SmartMaterialSpinner;
+import com.example.mealplanner.Database.MealsLocalDataSource;
 import com.example.mealplanner.ListedMeals.View.ListedMealsActivity;
 import com.example.mealplanner.MealSerach.Presenter.SearchMealsPresenter;
-import com.example.mealplanner.Model.Area.Area;
-import com.example.mealplanner.Model.Category.Category;
-import com.example.mealplanner.Model.Ingredient.Ingredient;
+import com.example.mealplanner.Network.Model.Area.Area;
+import com.example.mealplanner.Network.Model.Category.Category;
+import com.example.mealplanner.Network.Model.Ingredient.Ingredient;
 import com.example.mealplanner.Model.Repository;
 import com.example.mealplanner.Network.MealsRemoteDataScource;
 import com.example.mealplanner.R;
@@ -66,9 +67,8 @@ public class SearchMealsFragment extends Fragment implements SearchMealsView, Ca
         categoryAdapter = new CategoryAdapter(categories, getActivity(),this);
         categoryRecyclerView.setAdapter(categoryAdapter);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
-         presenter =
-                new SearchMealsPresenter(Repository.getInstance(MealsRemoteDataScource.getInstance()), this);
-        presenter.getCategories();
+        presenter = new SearchMealsPresenter(Repository.getInstance(MealsRemoteDataScource.getInstance(),
+                        MealsLocalDataSource.getInstance(getActivity())), this);        presenter.getCategories();
         presenter.getAreas();
         presenter.getIngredients();
         initSpinner(view);

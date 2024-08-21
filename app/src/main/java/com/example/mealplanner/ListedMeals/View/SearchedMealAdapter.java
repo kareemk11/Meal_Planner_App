@@ -4,14 +4,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
-import com.example.mealplanner.Model.Meal.Meal;
+import com.example.mealplanner.Network.Model.Meal.Meal;
 import com.example.mealplanner.R;
 import com.google.android.material.button.MaterialButton;
 
@@ -49,11 +48,10 @@ public class SearchedMealAdapter extends RecyclerView.Adapter<SearchedMealAdapte
         });
         Glide.with(context)
                 .load(meal.getThumbnail())
+                .placeholder(R.drawable.ic_launcher_background)
+                .error(R.drawable.ic_launcher_foreground)
                 .into(holder.mealThumbnail);
 
-        holder.saveButton.setOnClickListener(v -> {
-           listener.onSavelClick(meal);
-        });
     }
 
     @Override
@@ -71,14 +69,13 @@ public class SearchedMealAdapter extends RecyclerView.Adapter<SearchedMealAdapte
 
         ImageView mealThumbnail;
         TextView mealName;
-        MaterialButton saveButton;
         CardView mealCard;
 
         public MealViewHolder(@NonNull View itemView) {
             super(itemView);
             mealThumbnail = itemView.findViewById(R.id.mealThumbnail);
             mealName = itemView.findViewById(R.id.mealName);
-            saveButton = itemView.findViewById(R.id.saveButton);
+
             mealCard = itemView.findViewById(R.id.mealCard);
         }
     }

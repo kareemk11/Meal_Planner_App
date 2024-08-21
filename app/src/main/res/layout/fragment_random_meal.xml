@@ -94,21 +94,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/saveButton"
-                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_margin="8dp"
-                app:backgroundTint="#80000000"
-                app:cornerRadius="24dp"
-                app:icon="@drawable/baseline_arrow_downward_24"
-                app:iconGravity="textStart"
-                app:iconPadding="0dp"
-                app:iconTint="@android:color/white"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <com.google.android.material.chip.Chip
                 android:id="@+id/mealCategory"
                 android:layout_width="wrap_content"

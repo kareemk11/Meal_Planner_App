@@ -1,4 +1,4 @@
-package com.example.mealplanner.Model.Meal;
+package com.example.mealplanner.Network.Model.Meal;
 
 public class IngredientOfMeal {
 

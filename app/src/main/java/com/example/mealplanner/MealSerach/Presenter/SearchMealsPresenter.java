@@ -1,9 +1,9 @@
 package com.example.mealplanner.MealSerach.Presenter;
 
 import com.example.mealplanner.MealSerach.View.SearchMealsView;
-import com.example.mealplanner.Model.Area.Area;
-import com.example.mealplanner.Model.Category.Category;
-import com.example.mealplanner.Model.Ingredient.Ingredient;
+import com.example.mealplanner.Network.Model.Area.Area;
+import com.example.mealplanner.Network.Model.Category.Category;
+import com.example.mealplanner.Network.Model.Ingredient.Ingredient;
 import com.example.mealplanner.Network.NetworkListeners.SearchCategory.IngredientsNetworkListener;
 import com.example.mealplanner.Model.Repository;
 import com.example.mealplanner.Network.NetworkListeners.SearchCategory.AreaNetworkListener;

@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.mealplanner.Authentication.Login.LoginView.LoginActivity;
 import com.example.mealplanner.Authentication.Registeration.RegisterPresenter.RegisterPresenter;
 import com.example.mealplanner.HomeActivity.HomeActivity;
+import com.example.mealplanner.Model.UserSession;
 import com.example.mealplanner.R;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -39,6 +40,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView{
     private RegisterPresenter registerPresenter;
     private GoogleSignInClient mGoogleSignInClient;
     private GoogleSignInOptions gso;
+    UserSession userSession;
 
 
 
@@ -103,6 +105,13 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView{
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
+
+
+
+        userSession = UserSession.getInstance();
+        userSession.setUid(currentUser.getUid());
+        userSession.setEmail(currentUser.getEmail());
+        userSession.setUsername(currentUser.getDisplayName());
         if (currentUser != null) {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
