@@ -1,4 +1,4 @@
-package com.example.mealplanner.SavedMeals;
+package com.example.mealplanner.SavedMeals.Presenter;
 
 import android.util.Log;
 
@@ -10,11 +10,12 @@ import com.example.mealplanner.Database.Model.Favourite.FavouriteMeal;
 import com.example.mealplanner.Database.Model.LocalMeal.LocalMeal;
 import com.example.mealplanner.Model.Repository;
 import com.example.mealplanner.Model.UserSession;
+import com.example.mealplanner.SavedMeals.View.SavedMealsView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SavedMealsPresenter  {
+public class SavedMealsPresenter {
 
     private static final String TAG = "SavedMealsPresenter";
     private SavedMealsView view;
@@ -34,9 +35,13 @@ public class SavedMealsPresenter  {
         favouriteMealsLiveData.observe(owner, new Observer<List<FavouriteMeal>>() {
             @Override
             public void onChanged(List<FavouriteMeal> meals) {
-                Log.i(TAG, "fetchSavedMeals: " + meals);
                 localMeals.clear();
-                addFavToLocal(meals);
+                if (meals != null && !meals.isEmpty()) {
+                    addFavToLocal(meals);
+                }
+                else {
+                    view.displayMeals(localMeals);
+                }
             }
         });
     }
@@ -48,7 +53,6 @@ public class SavedMealsPresenter  {
                 public void onChanged(LocalMeal localMeal) {
                     if (localMeal != null) {
                         localMeals.add(localMeal);
-                        Log.i(TAG, "onMealSaved: " + localMeal);
                         view.displayMeals(localMeals);
                     }
                 }
@@ -60,4 +64,7 @@ public class SavedMealsPresenter  {
         repository.deleteFavorite(meal);
     }
 
+    public void onMealCardClicked(LocalMeal meal) {
+        view.navigateToMealDetails(meal);
+    }
 }

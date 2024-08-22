@@ -1,8 +1,9 @@
-package com.example.mealplanner.Meal;
+package com.example.mealplanner.Meal.Presenter;
 
 import com.example.mealplanner.Database.Model.Favourite.FavouriteMeal;
 import com.example.mealplanner.Database.Model.LocalMeal.LocalMeal;
 import com.example.mealplanner.Database.Model.MealDate.MealDate;
+import com.example.mealplanner.Meal.View.MealView;
 import com.example.mealplanner.Model.UserSession;
 import com.example.mealplanner.Network.Model.Meal.IngredientOfMeal;
 import com.example.mealplanner.Network.Model.Meal.Meal;

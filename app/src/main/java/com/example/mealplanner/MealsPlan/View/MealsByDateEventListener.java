@@ -1,9 +1,8 @@
-package com.example.mealplanner.SavedMeals;
+package com.example.mealplanner.MealsPlan.View;
 
 import com.example.mealplanner.Database.Model.LocalMeal.LocalMeal;
-import com.example.mealplanner.Network.Model.Meal.Meal;
 
-public interface FavMealsEventsListener {
+public interface MealsByDateEventListener {
     void onCardClick(LocalMeal meal);
 
     void onRemoveButtonClick(LocalMeal meal);

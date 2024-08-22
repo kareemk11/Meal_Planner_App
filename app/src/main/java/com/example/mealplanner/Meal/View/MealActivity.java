@@ -1,11 +1,7 @@
-package com.example.mealplanner.Meal;
+package com.example.mealplanner.Meal.View;
 
-import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -19,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.mealplanner.Database.MealsLocalDataSource;
+import com.example.mealplanner.Meal.Presenter.MealPresenter;
 import com.example.mealplanner.Network.Model.Meal.IngredientOfMeal;
 import com.example.mealplanner.Network.Model.Meal.Meal;
 import com.example.mealplanner.Model.Repository;
@@ -29,7 +26,6 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -164,16 +160,6 @@ public class MealActivity extends AppCompatActivity implements MealView {
         }
 
         return videoId;
-    }
-    public void scaleDownAnimation(View view) {
-        ObjectAnimator scaleDownX = ObjectAnimator.ofFloat(view, "scaleX", 0.7f);
-        ObjectAnimator scaleDownY = ObjectAnimator.ofFloat(view, "scaleY", 0.7f);
-
-        scaleDownX.setDuration(300);
-        scaleDownY.setDuration(300);
-
-        scaleDownX.start();
-        scaleDownY.start();
     }
 
 

@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.mealplanner.Database.MealsLocalDataSource;
-import com.example.mealplanner.Meal.MealActivity;
+import com.example.mealplanner.Meal.View.MealActivity;
 import com.example.mealplanner.RandomMeal.Presenter.RandomMealFragmentPresenter;
 import com.example.mealplanner.Network.Model.Meal.Meal;
 import com.example.mealplanner.Network.Model.Meal.MealResponse;

@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mealplanner.Database.MealsLocalDataSource;
 import com.example.mealplanner.ListedMeals.Presenter.SearchedMealsPresenter;
-import com.example.mealplanner.Meal.MealActivity;
+import com.example.mealplanner.Meal.View.MealActivity;
 import com.example.mealplanner.Network.Model.Meal.Meal;
 import com.example.mealplanner.Model.Repository;
 import com.example.mealplanner.Network.MealsRemoteDataScource;

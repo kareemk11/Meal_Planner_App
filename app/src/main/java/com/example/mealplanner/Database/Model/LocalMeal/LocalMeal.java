@@ -5,8 +5,10 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+
 @Entity(tableName = "meal")
-public class LocalMeal {
+public class LocalMeal implements Serializable {
     @PrimaryKey
     @NonNull
     private String mealId;

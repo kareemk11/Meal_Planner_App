@@ -1,4 +1,4 @@
-package com.example.mealplanner.MealsPlan;
+package com.example.mealplanner.MealsPlan.View;
 
 import com.example.mealplanner.Database.Model.LocalMeal.LocalMeal;
 
@@ -10,4 +10,6 @@ public interface MealsPlanView {
 
     void onMealSaved(LocalMeal meal);
     void onMealDeleted(LocalMeal meal);
+
+    void navigateToMealDetails(LocalMeal meal);
 }
