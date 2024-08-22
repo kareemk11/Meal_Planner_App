@@ -1,4 +1,4 @@
-package com.example.mealplanner.SavedMeals.View;
+package com.example.mealplanner.FavouriteMeals.View;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -19,13 +19,13 @@ import com.google.android.material.chip.Chip;
 
 import java.util.List;
 
-public class SavedMealAdapter extends RecyclerView.Adapter<SavedMealAdapter.SavedMealViewHolder> {
+public class FavouriteMealAdapter extends RecyclerView.Adapter<FavouriteMealAdapter.SavedMealViewHolder> {
 
     private List<LocalMeal> savedMealList;
     private Context context;
-    private FavMealsEventsListener listener;
+    private FavouriteMealsEventsListener listener;
 
-    public SavedMealAdapter(List<LocalMeal> savedMealList, Context context, FavMealsEventsListener listener) {
+    public FavouriteMealAdapter(List<LocalMeal> savedMealList, Context context, FavouriteMealsEventsListener listener) {
         this.savedMealList = savedMealList;
         this.context = context;
         this.listener = listener;

@@ -1,7 +1,9 @@
-package com.example.mealplanner.HomeActivity;
+package com.example.mealplanner.HomeActivity.View;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +12,8 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.mealplanner.Authentication.Login.LoginView.LoginActivity;
+import com.example.mealplanner.HomeActivity.Presenter.HomeActivityPresenter;
+import com.example.mealplanner.Model.UserSession;
 import com.example.mealplanner.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -18,8 +22,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.auth.UserInfo;
 
 public class HomeActivity extends AppCompatActivity implements HomeActivityView{
 
@@ -28,8 +30,12 @@ public class HomeActivity extends AppCompatActivity implements HomeActivityView{
     FirebaseUser user;
     HomeActivityPresenter presenter;
     private GoogleSignInClient mGoogleSignInClient;
+    private static final String TAG = "HomeActivityLog";
+    private boolean isGuest;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i(TAG, "onCreateHomeActivity: "+ UserSession.getInstance().getGuest());
+        isGuest = UserSession.getInstance().getGuest();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         logoutBtn = findViewById(R.id.logoutBtn);
@@ -37,6 +43,9 @@ public class HomeActivity extends AppCompatActivity implements HomeActivityView{
         user = mAuth.getCurrentUser();
         mGoogleSignInClient = GoogleSignIn.getClient(this, createGoogleSignInOptions());
         presenter = new HomeActivityPresenter(this, mGoogleSignInClient);
+        if (isGuest) {
+            logoutBtn.setVisibility(View.GONE);
+        }
         logoutBtn.setOnClickListener(view -> {
 
             presenter.onLogoutClicked();

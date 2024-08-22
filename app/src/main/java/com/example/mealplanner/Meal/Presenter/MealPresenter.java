@@ -1,8 +1,12 @@
 package com.example.mealplanner.Meal.Presenter;
 
+import android.util.Log;
+
 import com.example.mealplanner.Database.Model.Favourite.FavouriteMeal;
 import com.example.mealplanner.Database.Model.LocalMeal.LocalMeal;
 import com.example.mealplanner.Database.Model.MealDate.MealDate;
+import com.example.mealplanner.Meal.View.IfMealAddedToPlan;
+import com.example.mealplanner.Meal.View.IfMealIsFavouriteListener;
 import com.example.mealplanner.Meal.View.MealView;
 import com.example.mealplanner.Model.UserSession;
 import com.example.mealplanner.Network.Model.Meal.IngredientOfMeal;
@@ -14,7 +18,8 @@ import com.google.android.material.datepicker.CalendarConstraints;
 import java.util.Calendar;
 import java.util.List;
 
-public class MealPresenter implements MealDetailsNetworkListener {
+public class MealPresenter implements MealDetailsNetworkListener, IfMealIsFavouriteListener, IfMealAddedToPlan {
+    private static final String TAG = "MealPresenterLog";
     private MealView view;
     private Repository repository;
     UserSession userSession;
@@ -43,7 +48,12 @@ public class MealPresenter implements MealDetailsNetworkListener {
 
     public long getCurrentDay()
     {
-        return Calendar.getInstance().getTimeInMillis();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTimeInMillis();
     }
     public CalendarConstraints.Builder getCalendarConstraints(){
         CalendarConstraints.DateValidator dateValidator = new CalendarConstraints.DateValidator() {
@@ -103,6 +113,27 @@ public class MealPresenter implements MealDetailsNetworkListener {
         return localMeal;
 
     }
+
+    @Override
+    public void onMealIsFavourite(boolean isFavourite) {
+        Log.i(TAG, "onMealIsFavourite: ");
+        view.setMealAddedToFavourites(isFavourite);
+    }
+    public void isMealFavourite(String id) {
+        Log.i(TAG, "isMealFavourite: "+id);
+        repository.isMealFavourite(id, userSession.getUid(), this);
+    }
+
+    public void isMealAddedToPlan(String id) {
+        repository.isMealAddedToPlan(id, userSession.getUid(), this);
+    }
+
+    @Override
+    public void onMealAddedToPlan(boolean isAdded) {
+        view.setMealAddedToPlan(isAdded);
+    }
+
+
 //    public void removeMealFromFavourites(Meal meal) {
 //        FavouriteMeal favouriteMeal = new FavouriteMeal();
 //        favouriteMeal.setMealId(meal.getIdMeal());

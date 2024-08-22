@@ -1,4 +1,4 @@
-package com.example.mealplanner.HomeActivity;
+package com.example.mealplanner.HomeActivity.View;
 
 public interface HomeActivityView {
 

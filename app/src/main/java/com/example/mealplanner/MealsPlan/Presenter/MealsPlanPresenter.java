@@ -70,4 +70,8 @@ public class MealsPlanPresenter {
     public void onMealCardClicked(LocalMeal meal) {
         view.navigateToMealDetails(meal);
     }
+
+    public void onGuestBtnClicked() {
+        view.navigateToLoginScreen();
+    }
 }

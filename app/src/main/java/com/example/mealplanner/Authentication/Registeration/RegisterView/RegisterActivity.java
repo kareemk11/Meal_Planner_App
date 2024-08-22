@@ -1,6 +1,5 @@
 package com.example.mealplanner.Authentication.Registeration.RegisterView;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -8,19 +7,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mealplanner.Authentication.Login.LoginView.LoginActivity;
 import com.example.mealplanner.Authentication.Registeration.RegisterPresenter.RegisterPresenter;
 import com.example.mealplanner.Database.MealsLocalDataSource;
-import com.example.mealplanner.Database.Model.User.User;
-import com.example.mealplanner.HomeActivity.HomeActivity;
+import com.example.mealplanner.HomeActivity.View.HomeActivity;
 import com.example.mealplanner.Model.Repository;
 import com.example.mealplanner.Model.UserSession;
 import com.example.mealplanner.Network.MealsRemoteDataScource;

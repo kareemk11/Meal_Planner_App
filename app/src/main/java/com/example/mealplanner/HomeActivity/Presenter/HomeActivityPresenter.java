@@ -1,9 +1,6 @@
-package com.example.mealplanner.HomeActivity;
+package com.example.mealplanner.HomeActivity.Presenter;
 
-import android.content.Intent;
-import android.widget.Toast;
-
-import com.example.mealplanner.Authentication.Login.LoginView.LoginActivity;
+import com.example.mealplanner.HomeActivity.View.HomeActivityView;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

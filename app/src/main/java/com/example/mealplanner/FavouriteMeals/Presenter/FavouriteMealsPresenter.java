@@ -1,6 +1,4 @@
-package com.example.mealplanner.SavedMeals.Presenter;
-
-import android.util.Log;
+package com.example.mealplanner.FavouriteMeals.Presenter;
 
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
@@ -10,19 +8,19 @@ import com.example.mealplanner.Database.Model.Favourite.FavouriteMeal;
 import com.example.mealplanner.Database.Model.LocalMeal.LocalMeal;
 import com.example.mealplanner.Model.Repository;
 import com.example.mealplanner.Model.UserSession;
-import com.example.mealplanner.SavedMeals.View.SavedMealsView;
+import com.example.mealplanner.FavouriteMeals.View.FavouriteMealsView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SavedMealsPresenter {
+public class FavouriteMealsPresenter {
 
     private static final String TAG = "SavedMealsPresenter";
-    private SavedMealsView view;
+    private FavouriteMealsView view;
     private Repository repository;
     private List<LocalMeal> localMeals;
 
-    public SavedMealsPresenter(SavedMealsView view, Repository repository) {
+    public FavouriteMealsPresenter(FavouriteMealsView view, Repository repository) {
         this.view = view;
         this.repository = repository;
         this.localMeals = new ArrayList<>();
@@ -63,8 +61,11 @@ public class SavedMealsPresenter {
     public void deleteMeal(LocalMeal meal) {
         repository.deleteFavorite(meal);
     }
-
     public void onMealCardClicked(LocalMeal meal) {
         view.navigateToMealDetails(meal);
+    }
+
+    public void onGuestBtnClicked() {
+        view.navigateToLoginScreen();
     }
 }

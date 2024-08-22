@@ -9,11 +9,15 @@ public class UserSession {
     private String uid;
     private String email;
     private String username;
+    private boolean isGuest;
+
+
+
+
 
     private UserSession() {
     }
 
-    // Step 4: Provide a public static method to get the instance of the class
     public static synchronized UserSession getInstance() {
         if (instance == null) {
             instance = new UserSession();
@@ -47,8 +51,17 @@ public class UserSession {
         this.username = username;
     }
 
+    public boolean getGuest() {
+        return isGuest;
+    }
+
+    public void setGuest(boolean guest) {
+        isGuest = guest;
+    }
+
     public void clearSession() {
         instance = null;
     }
+
 }
 

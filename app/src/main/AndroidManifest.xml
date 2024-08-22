@@ -33,7 +33,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".HomeActivity.HomeActivity"
+            android:name=".HomeActivity.View.HomeActivity"
             android:exported="false" />
         <activity
             android:name=".Authentication.Registeration.RegisterView.RegisterActivity"

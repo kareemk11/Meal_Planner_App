@@ -1,4 +1,4 @@
-package com.example.mealplanner.MealsPlan.View;
+package com.example.mealplanner.FavouriteMeals.View;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,71 +19,70 @@ import com.example.mealplanner.Authentication.Login.LoginView.LoginActivity;
 import com.example.mealplanner.Database.MealsLocalDataSource;
 import com.example.mealplanner.Database.Model.LocalMeal.LocalMeal;
 import com.example.mealplanner.LocalMeal.View.LocalMealActivity;
-import com.example.mealplanner.MealsPlan.Presenter.MealsPlanPresenter;
 import com.example.mealplanner.Model.Repository;
 import com.example.mealplanner.Model.UserSession;
 import com.example.mealplanner.Network.MealsRemoteDataScource;
 import com.example.mealplanner.R;
+import com.example.mealplanner.FavouriteMeals.Presenter.FavouriteMealsPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class MealsPlanFragment extends Fragment implements MealsPlanView, MealsByDateEventListener {
-    RecyclerView mealsPlanRecyclerView;
-    MealsPlanAdapter mealsPlanAdapter;
-    MealsPlanPresenter mealsPlanPresenter;
+public class FavouriteMealsFragment extends Fragment implements FavouriteMealsView, FavouriteMealsEventsListener {
+
+    private static final String TAG ="SavedMealsFragment" ;
+    RecyclerView mealsRecyclerView;
+    FavouriteMealAdapter adapter;
+    FavouriteMealsPresenter presenter;
     LinearLayoutManager layoutManager;
     List<LocalMeal> meals;
     TextView guestMessage;
     TextView guestBtn;
-    private static final String TAG = "MealsPlanFragmentLog";
     private boolean isGuest;
-
-
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         isGuest = UserSession.getInstance().getGuest();
-        mealsPlanPresenter = new MealsPlanPresenter(this, Repository.getInstance(MealsRemoteDataScource.getInstance(),
-                MealsLocalDataSource.getInstance(getContext())));
+        presenter = new FavouriteMealsPresenter(this, Repository.getInstance(MealsRemoteDataScource.getInstance(),
+                MealsLocalDataSource.getInstance(getActivity())));
         super.onViewCreated(view, savedInstanceState);
+
         if (isGuest) {
             view.findViewById(R.id.mealPlanGroup).setVisibility(View.VISIBLE);
         }
-        else
-        {
+        else{
             view.findViewById(R.id.mealPlanGroup).setVisibility(View.GONE);
-            mealsPlanRecyclerView = view.findViewById(R.id.mealsByDateRecyclerView);
+            mealsRecyclerView = view.findViewById(R.id.favouriteMealsRecyclerView);
             recyclerViewInit();
-            mealsPlanPresenter.getMealsPlan(this);
+            presenter.getSavedMeals(this);
         }
 
         guestMessage = view.findViewById(R.id.guest_message);
         guestBtn = view.findViewById(R.id.guest_btn);
         guestBtn.setOnClickListener(view1 -> {
-            mealsPlanPresenter.onGuestBtnClicked();
+            presenter.onGuestBtnClicked();
         });
 
 
 
     }
 
-    private void recyclerViewInit() {
+   private void recyclerViewInit(){
 
-        meals = new ArrayList<>();
-        layoutManager = new LinearLayoutManager(getActivity());
-        mealsPlanAdapter = new MealsPlanAdapter(meals, getActivity(), this);
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        mealsPlanRecyclerView.setLayoutManager(layoutManager);
-        mealsPlanRecyclerView.setHasFixedSize(true);
-        mealsPlanRecyclerView.setAdapter(mealsPlanAdapter);
+       meals = new ArrayList<>();
+
+       mealsRecyclerView.setHasFixedSize(true);
+       adapter = new FavouriteMealAdapter(meals, getActivity(), this);
+       layoutManager = new LinearLayoutManager(getActivity());
+       layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+       mealsRecyclerView.setLayoutManager(layoutManager);
+       mealsRecyclerView.setAdapter(adapter);
     }
 
-    public MealsPlanFragment() {
+    public FavouriteMealsFragment() {
         // Required empty public constructor
     }
-
 
 
 
@@ -96,12 +96,14 @@ public class MealsPlanFragment extends Fragment implements MealsPlanView, MealsB
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_meals_plan, container, false);
+        return inflater.inflate(R.layout.fragment_favourite_meals, container, false);
     }
 
+
     @Override
-    public void displayMealsForDate(List<LocalMeal> meals) {
-        mealsPlanAdapter.setMealsPlanList(meals);
+    public void displayMeals(List<LocalMeal> meals) {
+        Log.i(TAG, "displayMeals: "+meals);
+        adapter.setSavedMealList(meals);
     }
 
     @Override
@@ -109,24 +111,23 @@ public class MealsPlanFragment extends Fragment implements MealsPlanView, MealsB
 
     }
 
+    @Override
+    public void navigateToMealDetails(LocalMeal meal) {
+        Intent intent = new Intent(getActivity(), LocalMealActivity.class);
+        intent.putExtra("meal", meal);
+        intent.putExtra("isFavourite", true);
+        startActivity(intent);
+    }
 
     @Override
     public void onCardClick(LocalMeal meal) {
-        mealsPlanPresenter.onMealCardClicked(meal);
+        presenter.onMealCardClicked(meal);
 
     }
 
     @Override
     public void onRemoveButtonClick(LocalMeal meal) {
-
-        mealsPlanPresenter.deleteMeal(meal);
-    }
-    @Override
-    public void navigateToMealDetails(LocalMeal meal) {
-        Intent intent = new Intent(getActivity(), LocalMealActivity.class);
-        intent.putExtra("meal", meal);
-        intent.putExtra("isFavourite", false);
-        startActivity(intent);
+        presenter.deleteMeal(meal);
     }
 
     @Override
