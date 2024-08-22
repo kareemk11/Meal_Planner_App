@@ -30,5 +30,7 @@ public interface MealDateDao {
     @Query("DELETE FROM meal_date WHERE mealId = :mealId")
     void deleteMealDateByMealId(String mealId);
 
+    @Query("SELECT * FROM meal_date WHERE mealId = :mealId AND userId = :userId")
+    MealDate getDateMealByMealIdAndUserId(String mealId, String userId);
 }
 

@@ -16,9 +16,9 @@
         tools:layout="@layout/fragment_search_meals" />
     <fragment
         android:id="@+id/savedMealsFragment"
-        android:name="com.example.mealplanner.SavedMeals.View.SavedMealsFragment"
+        android:name="com.example.mealplanner.FavouriteMeals.View.FavouriteMealsFragment"
         android:label="fragment_saved_meals"
-        tools:layout="@layout/fragment_saved_meals" />
+        tools:layout="@layout/fragment_favourite_meals" />
     <fragment
         android:id="@+id/mealsForWeakFragment"
         android:name="com.example.mealplanner.MealsPlan.View.MealsPlanFragment"

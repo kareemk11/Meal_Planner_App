@@ -9,7 +9,7 @@
     tools:context=".ListedMeals.View.ListedMealsActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/mealsByDateRecyclerView"
+        android:id="@+id/favouriteMealsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="569dp"
         android:layout_marginStart="1dp"
@@ -25,7 +25,7 @@
         android:layout_marginStart="61dp"
         android:layout_marginTop="61dp"
         android:layout_marginEnd="61dp"
-        android:text="@string/guest_message_plan"
+        android:text="@string/guest_message_fav"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -50,5 +50,4 @@
         android:layout_height="14dp"
         app:constraint_referenced_ids="guest_message, guest_btn"
         />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

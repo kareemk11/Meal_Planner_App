@@ -1,5 +1,7 @@
 package com.example.mealplanner.Model;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 
 import com.example.mealplanner.Database.MealsLocalDataSource;
@@ -7,6 +9,9 @@ import com.example.mealplanner.Database.Model.Favourite.FavouriteMeal;
 import com.example.mealplanner.Database.Model.LocalMeal.LocalMeal;
 import com.example.mealplanner.Database.Model.MealDate.MealDate;
 import com.example.mealplanner.Database.Model.User.User;
+import com.example.mealplanner.Meal.Presenter.MealPresenter;
+import com.example.mealplanner.Meal.View.IfMealAddedToPlan;
+import com.example.mealplanner.Meal.View.IfMealIsFavouriteListener;
 import com.example.mealplanner.Network.NetworkListeners.MealDetailsNetworkListener;
 import com.example.mealplanner.Network.NetworkListeners.ListedMeals.MealsByAreaNetworkListener;
 import com.example.mealplanner.Network.NetworkListeners.SearchCategory.AreaNetworkListener;
@@ -20,6 +25,7 @@ import com.example.mealplanner.Network.NetworkListeners.RandomMealNetworkListene
 import java.util.List;
 
 public class Repository {
+    private static final String TAG = "RepositoryLog";
     private static Repository instance;
     private MealsRemoteDataScource mealsRemoteDataScource;
     private MealsLocalDataSource mealsLocalDataSource;
@@ -91,5 +97,14 @@ public class Repository {
     }
     public LiveData<List<MealDate>> getDatedMealsByUserId(String userId) {
         return mealsLocalDataSource.getDatedMealsByUserId(userId);
+    }
+
+    public void isMealFavourite(String mealId, String userId, IfMealIsFavouriteListener listener) {
+        Log.i(TAG, "isMealFavourite: ");
+        mealsLocalDataSource.getFavoriteByMealIdAndUserId(mealId, userId, listener);
+    }
+
+    public void isMealAddedToPlan(String id, String uid, IfMealAddedToPlan listener) {
+        mealsLocalDataSource.getDateMealByMealIdAndUserId(id, uid, listener);
     }
 }

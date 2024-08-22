@@ -7,19 +7,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mealplanner.Authentication.Login.LoginPresenter.LoginPresenter;
 import com.example.mealplanner.Authentication.Registeration.RegisterView.RegisterActivity;
 import com.example.mealplanner.Database.MealsLocalDataSource;
-import com.example.mealplanner.Database.Model.User.User;
-import com.example.mealplanner.HomeActivity.HomeActivity;
+import com.example.mealplanner.HomeActivity.View.HomeActivity;
 import com.example.mealplanner.Model.Repository;
 import com.example.mealplanner.Model.UserSession;
 import com.example.mealplanner.Network.MealsRemoteDataScource;
@@ -38,6 +35,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     TextInputEditText emailTxt;
     TextInputEditText passTxt;
     Button loginBtn;
+    Button guestBtn;
     ProgressBar progressBar;
     TextView noAccountTxt;
     Button google_image;
@@ -86,6 +84,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         emailTxt = findViewById(R.id.emailTxt);
         passTxt = findViewById(R.id.passTxt);
         loginBtn = findViewById(R.id.loginBtn);
+        guestBtn = findViewById(R.id.guest_btn);
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
         noAccountTxt = findViewById(R.id.accountTxt);
@@ -108,9 +107,10 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
         loginBtn.setOnClickListener(view ->
         {
-            String email = emailTxt.getText().toString();
-            String password = passTxt.getText().toString();
-            loginPresenter.onLoginClicked(email, password);
+            loginPresenter.onLoginClicked(emailTxt.getText().toString(), passTxt.getText().toString());
+        });
+        guestBtn.setOnClickListener(view -> {
+            loginPresenter.onGuestLoginClicked();
         });
     }
 

@@ -1,6 +1,7 @@
 package com.example.mealplanner.Database;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -14,11 +15,14 @@ import com.example.mealplanner.Database.Model.MealDate.MealDate;
 import com.example.mealplanner.Database.Model.MealDate.MealDateDao;
 import com.example.mealplanner.Database.Model.User.User;
 import com.example.mealplanner.Database.Model.User.UserDao;
+import com.example.mealplanner.Meal.View.IfMealAddedToPlan;
+import com.example.mealplanner.Meal.View.IfMealIsFavouriteListener;
 
 import java.util.List;
 
 public class MealsLocalDataSource {
 
+    private static final String TAG ="MealsLocalDataSource" ;
     private static MealsLocalDataSource instance = null;
     private LocalMealDao localMealDao;
     private IngredientDao ingredientDao;
@@ -119,6 +123,33 @@ public class MealsLocalDataSource {
     public void deleteMealDate(LocalMeal mealDate) {
         new Thread(() -> {
             mealDateDao.deleteMealDateByMealId(mealDate.getMealId());
+        }).start();
+    }
+
+    public void getFavoriteByMealIdAndUserId(String mealId, String userId, IfMealIsFavouriteListener listener) {
+
+        Log.i(TAG, "getFavoriteByMealIdAndUserId: ");
+        new Thread(() -> {
+            FavouriteMeal favorite = favouriteDao.getFavoriteByMealIdAndUserId(mealId, userId);
+            if (favorite != null) {
+                Log.i(TAG, "getFavoriteByMealIdAndUserId: ");
+                listener.onMealIsFavourite(true);
+            } else {
+                listener.onMealIsFavourite(false);
+                }
+
+        }).start();
+    }
+
+    public void getDateMealByMealIdAndUserId(String id, String uid, IfMealAddedToPlan listener) {
+        new Thread(() -> {
+            MealDate mealDate = mealDateDao.getDateMealByMealIdAndUserId(id, uid);
+            if (mealDate != null) {
+                listener.onMealAddedToPlan(true);
+            }
+            else {
+                listener.onMealAddedToPlan(false);
+            }
         }).start();
     }
 }

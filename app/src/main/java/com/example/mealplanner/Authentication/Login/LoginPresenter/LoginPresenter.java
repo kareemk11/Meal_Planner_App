@@ -3,6 +3,7 @@ package com.example.mealplanner.Authentication.Login.LoginPresenter;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 
 import com.example.mealplanner.Authentication.Login.LoginView.LoginView;
@@ -25,6 +26,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 public class LoginPresenter implements LoginPresenterInterface {
     private static final int RC_SIGN_IN = 9001;
+    private static final String TAG ="LoginPresenter" ;
     private LoginView view;
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
@@ -48,7 +50,7 @@ public class LoginPresenter implements LoginPresenterInterface {
             view.hideProgress();
             if (task.isSuccessful()) {
                 view.hideProgress();
-                view.navigateToMainScreen();
+                onUserLoggedIn(mAuth.getCurrentUser());
             } else {
                 view.hideProgress();
                 view.showError(task.getException().getMessage());
@@ -83,7 +85,7 @@ public class LoginPresenter implements LoginPresenterInterface {
         mAuth.signInWithCredential(credential).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 FirebaseUser user = mAuth.getCurrentUser();
-                view.navigateToMainScreen();
+                onUserLoggedIn(user);
             } else {
 
                 view.showError(task.getException().getMessage());
@@ -127,11 +129,18 @@ public class LoginPresenter implements LoginPresenterInterface {
         userSession.setUid(currentUser.getUid());
         userSession.setEmail(currentUser.getEmail());
         userSession.setUsername(currentUser.getDisplayName());
+        userSession.setGuest(false);
 
+        Log.i(TAG, "onCreate: "+ UserSession.getInstance().getGuest()+" "+UserSession.getInstance().getUid());
 
         repository.insertUser(user);
 
         view.navigateToMainScreen();
     }
 
+    public void onGuestLoginClicked() {
+        userSession = UserSession.getInstance();
+        userSession.setGuest(true);
+        view.navigateToMainScreen();
+    }
 }

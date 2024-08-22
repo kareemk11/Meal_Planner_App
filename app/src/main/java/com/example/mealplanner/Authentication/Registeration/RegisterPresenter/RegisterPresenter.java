@@ -78,7 +78,7 @@ public class RegisterPresenter implements RegisterPresenterInterface {
         mAuth.signInWithCredential(credential).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 FirebaseUser user = mAuth.getCurrentUser();
-                view.navigateToMainScreen();
+                onUserLoggedIn(user);
             } else {
 
                 view.showError(task.getException().getMessage());
@@ -96,7 +96,7 @@ public class RegisterPresenter implements RegisterPresenterInterface {
 
             if (task.isSuccessful()) {
                 view.hideProgress();
-                view.navigateToMainScreen();
+                onUserLoggedIn(mAuth.getCurrentUser());
             } else {
                 view.hideProgress();
                 view.showError(task.getException().getMessage());
