@@ -6,6 +6,11 @@ import android.text.TextUtils;
 import android.util.Patterns;
 
 import com.example.mealplanner.Authentication.Login.LoginView.LoginView;
+import com.example.mealplanner.Database.MealsLocalDataSource;
+import com.example.mealplanner.Database.Model.User.User;
+import com.example.mealplanner.Model.Repository;
+import com.example.mealplanner.Model.UserSession;
+import com.example.mealplanner.Network.MealsRemoteDataScource;
 import com.example.mealplanner.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -23,14 +28,15 @@ public class LoginPresenter implements LoginPresenterInterface {
     private LoginView view;
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
-    private Context context;
+    UserSession userSession;
+    Repository repository;
 
 
-    public LoginPresenter(LoginView view , Context context) {
+    public LoginPresenter(LoginView view , GoogleSignInClient mGoogleSignInClient,Repository repository) {
         this.view = view;
-        this.context = context;
+        this.repository = repository;
         mAuth = FirebaseAuth.getInstance();
-        this.mGoogleSignInClient = GoogleSignIn.getClient((Context) view, createGoogleSignInOptions());
+        this.mGoogleSignInClient = mGoogleSignInClient;
     }
 
     public void onLoginClicked(String email, String password) {
@@ -107,13 +113,25 @@ public class LoginPresenter implements LoginPresenterInterface {
         }
     }
 
-    private GoogleSignInOptions createGoogleSignInOptions() {
 
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(context.getString(R.string.default_web_client_id)) // Request ID token
-                .requestEmail() // Request email
-                .build();
-        return gso;
+
+    public void onUserLoggedIn(FirebaseUser currentUser) {
+        User user = new User();
+        user.setEmail(currentUser.getEmail());
+        user.setUsername(currentUser.getDisplayName());
+        user.setUserId(currentUser.getUid());
+        user.setGoogleUserId(currentUser.getProviderId());
+
+
+        userSession = UserSession.getInstance();
+        userSession.setUid(currentUser.getUid());
+        userSession.setEmail(currentUser.getEmail());
+        userSession.setUsername(currentUser.getDisplayName());
+
+
+        repository.insertUser(user);
+
+        view.navigateToMainScreen();
     }
 
 }

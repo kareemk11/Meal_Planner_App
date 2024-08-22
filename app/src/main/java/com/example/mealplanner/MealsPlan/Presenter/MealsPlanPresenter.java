@@ -1,12 +1,12 @@
-package com.example.mealplanner.MealsPlan;
+package com.example.mealplanner.MealsPlan.Presenter;
 
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
-import com.example.mealplanner.Database.Model.Favourite.FavouriteMeal;
 import com.example.mealplanner.Database.Model.LocalMeal.LocalMeal;
 import com.example.mealplanner.Database.Model.MealDate.MealDate;
+import com.example.mealplanner.MealsPlan.View.MealsPlanView;
 import com.example.mealplanner.Model.Repository;
 import com.example.mealplanner.Model.UserSession;
 
@@ -32,21 +32,30 @@ public class MealsPlanPresenter {
             public void onChanged(List<MealDate> mealDates) {
 
                 localMeals.clear();
-                addMealPlansToLocal(mealDates);
+                if(mealDates != null&&!mealDates.isEmpty())
+                {
+                    addMealPlansToLocal(mealDates, owner);
+                }
+                else
+                {
+                    view.displayMealsForDate(localMeals);
+                }
+
             }
     });
 
     }
 
-    private void addMealPlansToLocal(List<MealDate> mealDates) {
-        for (MealDate mealDate : mealDates)
-        {
-            repository.getMealById(mealDate.mealId).observeForever(new Observer<LocalMeal>() {
+    private void addMealPlansToLocal(List<MealDate> mealDates, LifecycleOwner owner) {
+        for (MealDate mealDate : mealDates) {
+            repository.getMealById(mealDate.mealId).observe(owner, new Observer<LocalMeal>() {
                 @Override
                 public void onChanged(LocalMeal localMeal) {
-                    localMeal.setDate(mealDate.date);
-                    localMeals.add(localMeal);
-                    view.displayMealsForDate(localMeals);
+                    if (localMeal != null) {
+                        localMeal.setDate(mealDate.date);
+                        localMeals.add(localMeal);
+                        view.displayMealsForDate(localMeals);
+                    }
                 }
             });
         }
@@ -56,5 +65,9 @@ public class MealsPlanPresenter {
     public void deleteMeal(LocalMeal meal) {
 
         repository.deleteMealDate(meal);
+    }
+
+    public void onMealCardClicked(LocalMeal meal) {
+        view.navigateToMealDetails(meal);
     }
 }

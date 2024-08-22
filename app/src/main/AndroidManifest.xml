@@ -15,10 +15,10 @@
         android:theme="@style/Theme.MealPlanner"
         tools:targetApi="31">
         <activity
-            android:name=".LocalMealActivity.LocalMealActivity"
+            android:name=".LocalMeal.View.LocalMealActivity"
             android:exported="false" />
         <activity
-            android:name=".Meal.MealActivity"
+            android:name=".Meal.View.MealActivity"
             android:exported="false" />
         <activity
             android:name=".ListedMeals.View.ListedMealsActivity"

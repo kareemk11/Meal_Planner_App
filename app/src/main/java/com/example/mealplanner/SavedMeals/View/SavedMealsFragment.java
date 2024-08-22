@@ -1,5 +1,6 @@
-package com.example.mealplanner.SavedMeals;
+package com.example.mealplanner.SavedMeals.View;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,9 +16,11 @@ import android.view.ViewGroup;
 
 import com.example.mealplanner.Database.MealsLocalDataSource;
 import com.example.mealplanner.Database.Model.LocalMeal.LocalMeal;
+import com.example.mealplanner.LocalMeal.View.LocalMealActivity;
 import com.example.mealplanner.Model.Repository;
 import com.example.mealplanner.Network.MealsRemoteDataScource;
 import com.example.mealplanner.R;
+import com.example.mealplanner.SavedMeals.Presenter.SavedMealsPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +87,16 @@ public class SavedMealsFragment extends Fragment implements SavedMealsView, FavM
     }
 
     @Override
+    public void navigateToMealDetails(LocalMeal meal) {
+        Intent intent = new Intent(getActivity(), LocalMealActivity.class);
+        intent.putExtra("meal", meal);
+        intent.putExtra("isFavourite", true);
+        startActivity(intent);
+    }
+
+    @Override
     public void onCardClick(LocalMeal meal) {
+        presenter.onMealCardClicked(meal);
 
     }
 

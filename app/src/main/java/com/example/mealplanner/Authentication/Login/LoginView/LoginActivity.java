@@ -24,6 +24,9 @@ import com.example.mealplanner.Model.Repository;
 import com.example.mealplanner.Model.UserSession;
 import com.example.mealplanner.Network.MealsRemoteDataScource;
 import com.example.mealplanner.R;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -37,11 +40,11 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     Button loginBtn;
     ProgressBar progressBar;
     TextView noAccountTxt;
-    ImageView google_image;
-    ImageView facebook_image;
+    Button google_image;
     private FirebaseAuth mAuth;
     private LoginPresenter loginPresenter;
     UserSession userSession;
+    private GoogleSignInClient mGoogleSignInClient;
     FirebaseAuth.AuthStateListener authStateListener;
     FirebaseUser currentUser;
 
@@ -49,12 +52,9 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(authStateListener);
-
-        // Check if the user is already signed in when the activity starts
         currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            // If the user is already signed in, navigate to HomeActivity
-            loginUserAndNavigate(currentUser);
+            loginPresenter.onUserLoggedIn(currentUser);
         }
 
     }
@@ -69,18 +69,16 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, createGoogleSignInOptions());
 
-        // Setup the AuthStateListener early
         authStateListener = firebaseAuth -> {
             currentUser = firebaseAuth.getCurrentUser();
             if (currentUser != null) {
-                // User is signed in, log in the user and navigate to HomeActivity
-                loginUserAndNavigate(currentUser);
+                loginPresenter.onUserLoggedIn(currentUser);
             } else {
-                // User is signed out, stay on LoginActivity
+
                 Log.d(TAG, "No user is signed in");
             }
         };
@@ -91,12 +89,12 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
         noAccountTxt = findViewById(R.id.accountTxt);
-        google_image = findViewById(R.id.google_image);
-        facebook_image = findViewById(R.id.facebook_image);
+        google_image = findViewById(R.id.google_btn);
         noAccountTxt.setClickable(true);
         noAccountTxt.setTypeface(null, Typeface.BOLD);
         noAccountTxt.setPaintFlags(noAccountTxt.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        loginPresenter = new LoginPresenter(this, this);
+        loginPresenter = new LoginPresenter(this, mGoogleSignInClient,
+                Repository.getInstance(MealsRemoteDataScource.getInstance(),MealsLocalDataSource.getInstance(this)));
         noAccountTxt.setOnClickListener(view -> {
             startActivity(new Intent(this, RegisterActivity.class));
             finish();
@@ -147,31 +145,38 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         loginPresenter.handleSignInResult(requestCode, data);
     }
 
-    private void loginUserAndNavigate(FirebaseUser currentUser) {
-        User user = new User();
-        user.setEmail(currentUser.getEmail());
-        user.setUsername(currentUser.getDisplayName());
-        user.setUserId(currentUser.getUid());
-        user.setGoogleUserId(currentUser.getProviderId());
+    private GoogleSignInOptions createGoogleSignInOptions() {
 
-        // Store user session data
-        userSession = UserSession.getInstance();
-        userSession.setUid(currentUser.getUid());
-        userSession.setEmail(currentUser.getEmail());
-        userSession.setUsername(currentUser.getDisplayName());
-
-        // Insert user data into the database
-        Repository.getInstance(MealsRemoteDataScource.getInstance(),
-                MealsLocalDataSource.getInstance(getApplicationContext())).insertUser(user);
-
-        // Navigate to the home activity
-        Intent homeIntent = new Intent(this, HomeActivity.class);
-        startActivity(homeIntent);
-        finish();
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        return gso;
     }
+
+//    private void loginUserAndNavigate(FirebaseUser currentUser) {
+//        User user = new User();
+//        user.setEmail(currentUser.getEmail());
+//        user.setUsername(currentUser.getDisplayName());
+//        user.setUserId(currentUser.getUid());
+//        user.setGoogleUserId(currentUser.getProviderId());
+//
+//
+//        userSession = UserSession.getInstance();
+//        userSession.setUid(currentUser.getUid());
+//        userSession.setEmail(currentUser.getEmail());
+//        userSession.setUsername(currentUser.getDisplayName());
+//
+//
+//        Repository.getInstance(MealsRemoteDataScource.getInstance(),
+//                MealsLocalDataSource.getInstance(getApplicationContext())).insertUser(user);
+//
+//
+//        Intent homeIntent = new Intent(this, HomeActivity.class);
+//        startActivity(homeIntent);
+//        finish();
+//    }
 }

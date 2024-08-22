@@ -9,6 +9,11 @@ import android.text.TextUtils;
 import android.util.Patterns;
 
 import com.example.mealplanner.Authentication.Registeration.RegisterView.RegisterView;
+import com.example.mealplanner.Database.MealsLocalDataSource;
+import com.example.mealplanner.Database.Model.User.User;
+import com.example.mealplanner.Model.Repository;
+import com.example.mealplanner.Model.UserSession;
+import com.example.mealplanner.Network.MealsRemoteDataScource;
 import com.example.mealplanner.R.string;
 import com.example.mealplanner.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -32,13 +37,15 @@ public class RegisterPresenter implements RegisterPresenterInterface {
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private Context context;
+    UserSession userSession;
+    private Repository repository;
 
 
-    public RegisterPresenter(RegisterView view, Context context) {
+    public RegisterPresenter(RegisterView view, GoogleSignInClient mGoogleSignInClient,Repository repository) {
         this.view = view;
         mAuth = FirebaseAuth.getInstance();
-        this.context = context;
-        this.mGoogleSignInClient = GoogleSignIn.getClient((Context) view, createGoogleSignInOptions());
+        this.mGoogleSignInClient = mGoogleSignInClient;
+        this.repository = repository;
 
     }
 
@@ -129,13 +136,23 @@ public class RegisterPresenter implements RegisterPresenterInterface {
 
     }
 
-    private GoogleSignInOptions createGoogleSignInOptions() {
+    public void onUserLoggedIn(FirebaseUser currentUser) {
+        User user = new User();
+        user.setEmail(currentUser.getEmail());
+        user.setUsername(currentUser.getDisplayName());
+        user.setUserId(currentUser.getUid());
+        user.setGoogleUserId(currentUser.getProviderId());
 
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(context.getString(R.string.default_web_client_id)) // Request ID token
-                .requestEmail() // Request email
-                .build();
-        return gso;
+
+        userSession = UserSession.getInstance();
+        userSession.setUid(currentUser.getUid());
+        userSession.setEmail(currentUser.getEmail());
+        userSession.setUsername(currentUser.getDisplayName());
+
+
+        repository.insertUser(user);
+
+        view.navigateToMainScreen();
     }
 
 

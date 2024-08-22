@@ -1,4 +1,4 @@
-package com.example.mealplanner.Meal;
+package com.example.mealplanner.Meal.View;
 
 import com.example.mealplanner.Network.Model.Meal.Meal;
 
