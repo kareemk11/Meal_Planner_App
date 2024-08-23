@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.example.mealplanner.Authentication.Login.LoginView.LoginActivity;
@@ -24,8 +25,10 @@ import com.example.mealplanner.Model.UserSession;
 import com.example.mealplanner.Network.MealsRemoteDataScource;
 import com.example.mealplanner.R;
 import com.example.mealplanner.FavouriteMeals.Presenter.FavouriteMealsPresenter;
+import com.google.android.material.search.SearchBar;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -39,7 +42,9 @@ public class FavouriteMealsFragment extends Fragment implements FavouriteMealsVi
     List<LocalMeal> meals;
     TextView guestMessage;
     TextView guestBtn;
+    SearchView searchFavourites;
     private boolean isGuest;
+    Comparator<LocalMeal> sortByName;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -50,19 +55,46 @@ public class FavouriteMealsFragment extends Fragment implements FavouriteMealsVi
 
         if (isGuest) {
             view.findViewById(R.id.mealPlanGroup).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.searchFavourites).setVisibility(View.GONE);
+            guestMessage = view.findViewById(R.id.guest_message);
+            guestBtn = view.findViewById(R.id.guest_btn);
+            guestBtn.setOnClickListener(view1 -> {
+                presenter.onGuestBtnClicked();
+            });
         }
         else{
+            searchFavourites = view.findViewById(R.id.searchFavourites);
             view.findViewById(R.id.mealPlanGroup).setVisibility(View.GONE);
             mealsRecyclerView = view.findViewById(R.id.favouriteMealsRecyclerView);
             recyclerViewInit();
             presenter.getSavedMeals(this);
+            searchFavourites.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    adapter.filter(query);
+                    adapter.sortItems(sortByName);
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    Log.i(TAG, "onQueryTextChange: "+newText);
+                    adapter.filter(newText);
+                    adapter.sortItems(sortByName);
+                    return false;
+                }
+            });
+            sortByName = new Comparator<LocalMeal>() {
+                @Override
+                public int compare(LocalMeal localMeal, LocalMeal t1) {
+                   return localMeal.getName().compareTo(t1.getName());
+                }
+            };
         }
 
-        guestMessage = view.findViewById(R.id.guest_message);
-        guestBtn = view.findViewById(R.id.guest_btn);
-        guestBtn.setOnClickListener(view1 -> {
-            presenter.onGuestBtnClicked();
-        });
+
+
+
 
 
 
@@ -104,6 +136,7 @@ public class FavouriteMealsFragment extends Fragment implements FavouriteMealsVi
     public void displayMeals(List<LocalMeal> meals) {
         Log.i(TAG, "displayMeals: "+meals);
         adapter.setSavedMealList(meals);
+        adapter.sortItems(sortByName);
     }
 
     @Override

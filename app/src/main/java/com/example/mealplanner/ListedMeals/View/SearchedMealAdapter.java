@@ -1,6 +1,7 @@
 package com.example.mealplanner.ListedMeals.View;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,15 +11,18 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.mealplanner.Network.Model.Meal.Meal;
 import com.example.mealplanner.R;
-import com.google.android.material.button.MaterialButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SearchedMealAdapter extends RecyclerView.Adapter<SearchedMealAdapter.MealViewHolder> {
 
+    private static final String TAG = "SearchedMealAdapter";
     private List<Meal> mealList;
+    private List<Meal> filtrationList;
     private Context context;
     private ListedMealsEventsListener listener;
 
@@ -26,13 +30,14 @@ public class SearchedMealAdapter extends RecyclerView.Adapter<SearchedMealAdapte
         this.mealList = mealList;
         this.context = context;
         this.listener = listener;
+        this.filtrationList = new ArrayList<>(mealList);
     }
 
     @NonNull
     @Override
     public MealViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.mealrow, parent, false);
+                .inflate(R.layout.meal_row, parent, false);
         return new MealViewHolder(view);
     }
 
@@ -48,6 +53,7 @@ public class SearchedMealAdapter extends RecyclerView.Adapter<SearchedMealAdapte
         });
         Glide.with(context)
                 .load(meal.getThumbnail())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .placeholder(R.drawable.ic_launcher_background)
                 .error(R.drawable.ic_launcher_foreground)
                 .into(holder.mealThumbnail);
@@ -61,6 +67,7 @@ public class SearchedMealAdapter extends RecyclerView.Adapter<SearchedMealAdapte
 
     public void setMealList(List<Meal> meals) {
         mealList = meals;
+        filtrationList = new ArrayList<>(meals);
         notifyDataSetChanged();
     }
 
@@ -80,6 +87,17 @@ public class SearchedMealAdapter extends RecyclerView.Adapter<SearchedMealAdapte
         }
     }
 
-
+    public void filter(String text) {
+        List<Meal> filteredList = new ArrayList<>();
+        for (Meal item : filtrationList) {
+            Log.i(TAG, "filter: "+item.getName());
+            Log.i(TAG, "filter: "+text);
+            if (item.getName().toLowerCase().contains(text.toLowerCase())) {
+                filteredList.add(item);
+            }
+        }
+        mealList = filteredList;
+        notifyDataSetChanged();
+    }
 }
 

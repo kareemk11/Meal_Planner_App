@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.mealplanner.Database.MealsLocalDataSource;
 import com.example.mealplanner.Meal.Presenter.MealPresenter;
 import com.example.mealplanner.Model.UserSession;
@@ -174,9 +175,14 @@ public class MealActivity extends AppCompatActivity implements MealView {
         mealArea.setText(meal.getArea());
         mealInstructions.setText(meal.getInstructions());
         ingredientsAdapter.updateIngredients(meal.getIngredients());
-        Glide.with(this).load(meal.getThumbnail()).into(mealImage);
+        Glide.with(this).load(meal.getThumbnail())
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .placeholder(R.drawable.ic_launcher_background)
+                .error(R.drawable.ic_launcher_foreground)
+                .into(mealImage);
         String videoUrl = meal.getYoutubeLink();
-        String videoId = extractYouTubeId(videoUrl);
+        String videoId = presenter.extractYouTubeId(videoUrl);
         String embedUrl = "https://www.youtube.com/embed/" + videoId + "?autoplay=0";
         youTubePlayer.loadUrl(embedUrl);
     }
@@ -200,19 +206,19 @@ public class MealActivity extends AppCompatActivity implements MealView {
     }
 
 
-    public String extractYouTubeId(String url) {
-        String videoId = null;
-        String pattern = "^(http(s)?:\\/\\/)?(www\\.)?(youtube\\.com|youtu\\.?be)\\/(watch\\?v=|embed\\/|v\\/|.+\\?v=)?([^&=%\\?]{11})";
-
-        Pattern compiledPattern = Pattern.compile(pattern);
-        Matcher matcher = compiledPattern.matcher(url);
-
-        if (matcher.find()) {
-            videoId = matcher.group(6);
-        }
-
-        return videoId;
-    }
+//    public String extractYouTubeId(String url) {
+//        String videoId = null;
+//        String pattern = "^(http(s)?:\\/\\/)?(www\\.)?(youtube\\.com|youtu\\.?be)\\/(watch\\?v=|embed\\/|v\\/|.+\\?v=)?([^&=%\\?]{11})";
+//
+//        Pattern compiledPattern = Pattern.compile(pattern);
+//        Matcher matcher = compiledPattern.matcher(url);
+//
+//        if (matcher.find()) {
+//            videoId = matcher.group(6);
+//        }
+//
+//        return videoId;
+//    }
 
 
 }

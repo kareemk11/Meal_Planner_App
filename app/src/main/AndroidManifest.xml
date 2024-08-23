@@ -34,6 +34,7 @@
         </activity>
         <activity
             android:name=".HomeActivity.View.HomeActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"
             android:exported="false" />
         <activity
             android:name=".Authentication.Registeration.RegisterView.RegisterActivity"

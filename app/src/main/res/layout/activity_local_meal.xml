@@ -66,18 +66,18 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/addToPlanButton"
+                    style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_gravity="top|end"
                     android:layout_margin="16dp"
-                    app:rippleColor="@android:color/white"
+                    app:backgroundTint="#80000000"
+                    app:cornerRadius="24dp"
                     app:icon="@drawable/baseline_delete_24"
                     app:iconGravity="textStart"
                     app:iconPadding="0dp"
                     app:iconTint="@android:color/white"
-                    app:cornerRadius="24dp"
-                    app:backgroundTint="#80000000"
-                    style="@style/Widget.MaterialComponents.Button.UnelevatedButton"/>
+                    app:rippleColor="@android:color/holo_red_light" />
             </FrameLayout>
         </androidx.cardview.widget.CardView>
 

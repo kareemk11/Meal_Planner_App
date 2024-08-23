@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.mealplanner.Database.MealsLocalDataSource;
 import com.example.mealplanner.Meal.View.MealActivity;
 import com.example.mealplanner.RandomMeal.Presenter.RandomMealFragmentPresenter;
@@ -40,10 +41,7 @@ public class RandomMealFragment extends Fragment implements RandomMealView {
     TextView mealName;
     TextView mealCategory;
     TextView mealArea;
-    TextView mealInstructions;
     RandomMealFragmentPresenter presenter;
-    FloatingActionButton logoutBtn;
-    Button getAnotherMealBtn;
     Meal meal;
 
     public RandomMealFragment() {
@@ -72,11 +70,8 @@ public class RandomMealFragment extends Fragment implements RandomMealView {
         mealCategory = view.findViewById(R.id.mealCategory);
         mealArea = view.findViewById(R.id.mealArea);
         mealCard = view.findViewById(R.id.mealCard);
-
         presenter = new RandomMealFragmentPresenter(this, Repository.getInstance(MealsRemoteDataScource.getInstance(), MealsLocalDataSource.getInstance(getActivity())));
         presenter.getRandomMeal();
-
-
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
 
@@ -98,8 +93,10 @@ public class RandomMealFragment extends Fragment implements RandomMealView {
 
         Glide.with(this)
                 .load(meal.getThumbnail())
-                .placeholder(R.drawable.ic_launcher_background) // Optional placeholder while loading
-                .error(R.drawable.google) // Optional error image if loading fails
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .placeholder(R.drawable.ic_launcher_background)
+                .error(R.drawable.ic_launcher_foreground)
                 .into(mealThumbnail);
     }
 

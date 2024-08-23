@@ -9,9 +9,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.example.mealplanner.Authentication.Login.LoginView.LoginActivity;
@@ -25,6 +28,7 @@ import com.example.mealplanner.Network.MealsRemoteDataScource;
 import com.example.mealplanner.R;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -36,8 +40,10 @@ public class MealsPlanFragment extends Fragment implements MealsPlanView, MealsB
     List<LocalMeal> meals;
     TextView guestMessage;
     TextView guestBtn;
+    SearchView searchMealPlan;
     private static final String TAG = "MealsPlanFragmentLog";
     private boolean isGuest;
+    public Comparator<LocalMeal> sortByData;
 
 
 
@@ -49,20 +55,49 @@ public class MealsPlanFragment extends Fragment implements MealsPlanView, MealsB
         super.onViewCreated(view, savedInstanceState);
         if (isGuest) {
             view.findViewById(R.id.mealPlanGroup).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.searchMealPlan).setVisibility(View.GONE);
+            guestMessage = view.findViewById(R.id.guest_message);
+            guestBtn = view.findViewById(R.id.guest_btn);
+            guestBtn.setOnClickListener(view1 -> {
+                mealsPlanPresenter.onGuestBtnClicked();
+            });
+
         }
         else
         {
             view.findViewById(R.id.mealPlanGroup).setVisibility(View.GONE);
+            searchMealPlan = view.findViewById(R.id.searchMealPlan);
             mealsPlanRecyclerView = view.findViewById(R.id.mealsByDateRecyclerView);
             recyclerViewInit();
             mealsPlanPresenter.getMealsPlan(this);
+            searchMealPlan.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    mealsPlanAdapter.filter(query);
+                    mealsPlanAdapter.sortItems(sortByData);
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    Log.i(TAG, "onQueryTextChange: "+newText);
+                    mealsPlanAdapter.filter(newText);
+                    mealsPlanAdapter.sortItems(sortByData);
+                    return false;
+                }
+            });
+            sortByData = new Comparator<LocalMeal>() {
+                @Override
+                public int compare(LocalMeal o1, LocalMeal o2) {
+                    return o1.getDate().compareTo(o2.getDate());
+                }
+            };
+            mealsPlanAdapter.sortItems(sortByData);
+
         }
 
-        guestMessage = view.findViewById(R.id.guest_message);
-        guestBtn = view.findViewById(R.id.guest_btn);
-        guestBtn.setOnClickListener(view1 -> {
-            mealsPlanPresenter.onGuestBtnClicked();
-        });
+
+
 
 
 
@@ -89,7 +124,7 @@ public class MealsPlanFragment extends Fragment implements MealsPlanView, MealsB
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        //getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
     @Override
@@ -102,6 +137,7 @@ public class MealsPlanFragment extends Fragment implements MealsPlanView, MealsB
     @Override
     public void displayMealsForDate(List<LocalMeal> meals) {
         mealsPlanAdapter.setMealsPlanList(meals);
+        mealsPlanAdapter.sortItems(sortByData);
     }
 
     @Override

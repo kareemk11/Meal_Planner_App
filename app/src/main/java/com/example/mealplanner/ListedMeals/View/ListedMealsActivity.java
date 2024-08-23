@@ -3,6 +3,8 @@ package com.example.mealplanner.ListedMeals.View;
 import android.content.Intent;
 import android.os.Bundle;
 
+import android.util.Log;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 
@@ -22,8 +24,9 @@ import com.example.mealplanner.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListedMealsActivity extends AppCompatActivity implements ListedMealsEventsListener,SearchedMealsView {
+public class ListedMealsActivity extends AppCompatActivity implements ListedMealsEventsListener, SearchedMealsView {
 
+    private static final String TAG ="ListedMealsActivityLog" ;
     String type;
     String name;
     RecyclerView mealsRecyclerView;
@@ -31,27 +34,42 @@ public class ListedMealsActivity extends AppCompatActivity implements ListedMeal
     LinearLayoutManager linearLayoutManager;
     List<Meal> meals;
     SearchedMealsPresenter presenter;
+    SearchView searchView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         type = getIntent().getStringExtra("type");
         name = getIntent().getStringExtra("name");
-        presenter = new SearchedMealsPresenter(Repository.getInstance(MealsRemoteDataScource.getInstance(), MealsLocalDataSource.getInstance(this)),this);
+        presenter = new SearchedMealsPresenter(Repository.getInstance(MealsRemoteDataScource.getInstance(), MealsLocalDataSource.getInstance(this)), this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listed_meals);
+        searchView = findViewById(R.id.searchView);
         mealsRecyclerView = findViewById(R.id.favouriteMealsRecyclerView);
         recycleViewInit();
         if (type.equals("category")) {
             presenter.searchMealsByCategory(name);
-        }
-        else if (type.equals("area")) {
+        } else if (type.equals("area")) {
             presenter.searchMealsByArea(name);
-        }
-        else if (type.equals("ingredient")) {
+        } else if (type.equals("ingredient")) {
 
             presenter.searchMealsByIngredient(name);
         }
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                adapter.filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Log.i(TAG, "onQueryTextChange: "+newText);
+                adapter.filter(newText);
+                return false;
+            }
+        });
     }
 
     private void recycleViewInit() {
@@ -82,6 +100,7 @@ public class ListedMealsActivity extends AppCompatActivity implements ListedMeal
         adapter.setMealList(meals);
 
     }
+
     @Override
     public void showError(String errorMessage) {
         Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
