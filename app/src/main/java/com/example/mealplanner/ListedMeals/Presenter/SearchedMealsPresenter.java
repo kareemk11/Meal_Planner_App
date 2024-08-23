@@ -2,7 +2,7 @@ package com.example.mealplanner.ListedMeals.Presenter;
 
 
 import com.example.mealplanner.ListedMeals.View.SearchedMealsView;
-import com.example.mealplanner.Network.Model.Meal.Meal;
+import com.example.mealplanner.Model.Meal.Meal;
 import com.example.mealplanner.Model.Repository;
 import com.example.mealplanner.Network.NetworkListeners.ListedMeals.MealsByAreaNetworkListener;
 import com.example.mealplanner.Network.NetworkListeners.ListedMeals.MealsByCategoryNetworkListener;

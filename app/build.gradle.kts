@@ -61,6 +61,7 @@ dependencies {
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
     implementation(libs.core)
+    implementation(libs.firebase.firestore)
     testImplementation(libs.junit)
     implementation("de.hdodenhof:circleimageview:3.1.0")
     androidTestImplementation(libs.ext.junit)
@@ -91,5 +92,7 @@ dependencies {
 
     // SwipeRefreshLayout
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
+
+    implementation ("androidx.viewpager2:viewpager2:1.0.0")
 
 }

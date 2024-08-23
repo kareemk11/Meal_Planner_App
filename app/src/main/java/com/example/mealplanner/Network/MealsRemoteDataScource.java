@@ -7,13 +7,14 @@ import com.example.mealplanner.Network.Model.Category.CategoryResponse;
 import com.example.mealplanner.Network.Model.Ingredient.IngredientResponse;
 import com.example.mealplanner.Network.NetworkListeners.MealDetailsNetworkListener;
 import com.example.mealplanner.Network.NetworkListeners.SearchCategory.IngredientsNetworkListener;
-import com.example.mealplanner.Network.Model.Meal.MealResponse;
+import com.example.mealplanner.Model.Meal.MealResponse;
 import com.example.mealplanner.Network.NetworkListeners.SearchCategory.AreaNetworkListener;
 import com.example.mealplanner.Network.NetworkListeners.ListedMeals.MealsByAreaNetworkListener;
 import com.example.mealplanner.Network.NetworkListeners.ListedMeals.MealsByCategoryNetworkListener;
 import com.example.mealplanner.Network.NetworkListeners.ListedMeals.MealsByMainIngredientNetworkListener;
 import com.example.mealplanner.Network.NetworkListeners.SearchCategory.CategoryNetworkListener;
 import com.example.mealplanner.Network.NetworkListeners.RandomMealNetworkListener;
+import com.example.mealplanner.RandomMeal.Presenter.RandomMealFragmentPresenter;
 import com.google.gson.Gson;
 
 import retrofit2.Call;
@@ -60,7 +61,7 @@ public class MealsRemoteDataScource {
                     MealResponse meal =  response.body();
                     //Log.i(TAG, "onResponse: "+response.raw().body());
 
-                    listener.onRandomMealSuccess(meal);
+                    //listener.onRandomMealSuccess(meal);
                 }
             }
 
@@ -206,4 +207,36 @@ public class MealsRemoteDataScource {
         });
 
     }
+
+    public void getMultipleRandomMeals(RandomMealNetworkListener listener) {
+
+        for (int i = 0; i < 10; i++) {
+            Call<MealResponse> call = mealApiService.getRandomMeal();
+            call.enqueue(new Callback<MealResponse>() {
+
+
+                @Override
+                public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
+                    if (response.isSuccessful()) {
+                        // Log.i(TAG, "onResponse: "+response.body());
+                        MealResponse meal = response.body();
+                        //Log.i(TAG, "onResponse: "+response.raw().body());
+
+                        listener.onMealListSuccess(meal.getMeals().get(0));
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<MealResponse> call, Throwable t) {
+                    //Log.i(TAG, "onFailure: ");
+                    listener.onRandomMealFailure(t.getMessage());
+                    //t.printStackTrace();
+                }
+            });
+
+
+        }
+    }
+
+
 }

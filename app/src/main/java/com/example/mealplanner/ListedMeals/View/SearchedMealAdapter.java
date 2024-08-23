@@ -12,7 +12,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.example.mealplanner.Network.Model.Meal.Meal;
+import com.example.mealplanner.Model.Meal.Meal;
 import com.example.mealplanner.R;
 
 import java.util.ArrayList;

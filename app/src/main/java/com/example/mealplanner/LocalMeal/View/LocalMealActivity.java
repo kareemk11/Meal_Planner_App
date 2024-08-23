@@ -1,7 +1,10 @@
 package com.example.mealplanner.LocalMeal.View;
 
 import android.content.DialogInterface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -24,6 +27,7 @@ import com.google.android.material.button.MaterialButton;
 
 public class LocalMealActivity extends AppCompatActivity implements LocalMealView {
 
+    private static final String TAG = "LocalMealActivityLog";
     TextView mealTitle;
     TextView mealCategory;
     TextView mealArea;
@@ -125,5 +129,7 @@ public class LocalMealActivity extends AppCompatActivity implements LocalMealVie
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.myColorPrimaryVariant));
 
     }
+
+
 
 }

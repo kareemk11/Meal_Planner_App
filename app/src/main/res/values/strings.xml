@@ -77,4 +77,6 @@
     <string name="guest_message_fav">Log in to add Meals to Favourits</string>
     <string name="guest_message_plan">Log in to add Meals to your Plan</string>
     <string name="meal_added">Meal Added</string>
+    <string name="hi">Hi ,</string>
+    <string name="random_meals">Daily Inspiration</string>
 </resources>

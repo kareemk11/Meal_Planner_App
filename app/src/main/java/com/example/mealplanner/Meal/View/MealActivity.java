@@ -18,8 +18,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.mealplanner.Database.MealsLocalDataSource;
 import com.example.mealplanner.Meal.Presenter.MealPresenter;
 import com.example.mealplanner.Model.UserSession;
-import com.example.mealplanner.Network.Model.Meal.IngredientOfMeal;
-import com.example.mealplanner.Network.Model.Meal.Meal;
+import com.example.mealplanner.Model.Meal.IngredientOfMeal;
+import com.example.mealplanner.Model.Meal.Meal;
 import com.example.mealplanner.Model.Repository;
 import com.example.mealplanner.Network.MealsRemoteDataScource;
 import com.example.mealplanner.R;
@@ -31,8 +31,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class MealActivity extends AppCompatActivity implements MealView {
 

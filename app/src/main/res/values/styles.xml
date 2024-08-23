@@ -48,4 +48,13 @@
         <item name="colorAccent">@color/myColorSecondary</item>
 
     </style>
+
+    <style name="CustomTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/myColorPrimary</item>
+        <item name="hintTextColor">@color/myColorPrimary</item>
+        <item name="cursorColor">@color/colorPrimary</item>
+        <item name="counterTextColor">@color/white</item>
+        <item name="android:textColorHint">@color/white</item>
+
+    </style>
 </resources>
