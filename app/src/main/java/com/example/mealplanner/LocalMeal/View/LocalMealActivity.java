@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.mealplanner.Database.MealsLocalDataSource;
 import com.example.mealplanner.Database.Model.LocalMeal.LocalMeal;
 import com.example.mealplanner.LocalMeal.Presenter.LocalMealPresenter;
@@ -80,7 +81,12 @@ public class LocalMealActivity extends AppCompatActivity implements LocalMealVie
         mealArea.setText(meal.getArea());
         mealInstructions.setText(meal.getInstructions());
         ingredients.setText(meal.getIngredients());
-        Glide.with(this).load(meal.getThumbnail()).into(mealImage);
+        Glide.with(this).
+                load(meal.getThumbnail())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .placeholder(R.drawable.ic_launcher_background)
+                .error(R.drawable.ic_launcher_foreground)
+                .into(mealImage);
         String videoUrl = meal.getYoutubeLink();
         String videoId = presenter.extractYouTubeId(videoUrl);
         String embedUrl = "https://www.youtube.com/embed/" + videoId + "?autoplay=0";

@@ -12,6 +12,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.mealplanner.Network.Model.Category.Category;
 import com.example.mealplanner.R;
 
@@ -32,7 +33,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     @NonNull
     @Override
     public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.categoryrow, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.category_row, parent, false);
         return new CategoryViewHolder(view);
     }
 
@@ -76,6 +77,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             });
             Glide.with(context)
                     .load(category.getStrCategoryThumb())
+                    .centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .error(R.drawable.ic_launcher_foreground)
                     .into(categoryImageView);
         }
     }

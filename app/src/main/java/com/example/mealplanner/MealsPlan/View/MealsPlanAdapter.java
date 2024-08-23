@@ -1,6 +1,7 @@
 package com.example.mealplanner.MealsPlan.View;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,24 +13,31 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.mealplanner.Database.Model.LocalMeal.LocalMeal;
+import com.example.mealplanner.Network.Model.Meal.Meal;
 import com.example.mealplanner.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class MealsPlanAdapter extends RecyclerView.Adapter<MealsPlanAdapter.MealsPlanViewHolder> {
 
     private List<LocalMeal> savedMealList;
+    private List<LocalMeal> filtrationList;
     private Context context;
     private MealsByDateEventListener listener;
 
-    // Updated constructor
+
     public MealsPlanAdapter(List<LocalMeal> savedMealList, Context context, MealsByDateEventListener listener) {
         this.savedMealList = savedMealList;
         this.context = context;
         this.listener = listener;
+        this.filtrationList = new ArrayList<>(savedMealList);
     }
 
     @NonNull
@@ -50,6 +58,8 @@ public class MealsPlanAdapter extends RecyclerView.Adapter<MealsPlanAdapter.Meal
 
         Glide.with(context)
                 .load(meal.getThumbnail())
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .placeholder(R.drawable.ic_launcher_background)
                 .error(R.drawable.ic_launcher_foreground)
                 .into(holder.mealThumbnail);
@@ -67,8 +77,11 @@ public class MealsPlanAdapter extends RecyclerView.Adapter<MealsPlanAdapter.Meal
 
     public void setMealsPlanList(List<LocalMeal> meals) {
         savedMealList = meals;
+        filtrationList = new ArrayList<>(meals);
         notifyDataSetChanged();
     }
+
+
 
     public class MealsPlanViewHolder extends RecyclerView.ViewHolder {
         ImageView mealThumbnail;
@@ -89,5 +102,21 @@ public class MealsPlanAdapter extends RecyclerView.Adapter<MealsPlanAdapter.Meal
             categoryChip = itemView.findViewById(R.id.mealCategory);
             mealDate = itemView.findViewById(R.id.mealDate);
         }
+    }
+
+    public void filter(String text) {
+        List<LocalMeal> filteredList = new ArrayList<>();
+        for (LocalMeal item : filtrationList) {
+            if (item.getName().toLowerCase().contains(text.toLowerCase())) {
+                filteredList.add(item);
+            }
+        }
+        savedMealList = filteredList;
+        notifyDataSetChanged();
+    }
+
+    public void sortItems(Comparator<LocalMeal> comparator) {
+        Collections.sort(savedMealList, comparator);
+        notifyDataSetChanged();
     }
 }

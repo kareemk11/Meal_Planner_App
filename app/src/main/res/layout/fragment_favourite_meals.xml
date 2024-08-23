@@ -11,12 +11,13 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/favouriteMealsRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="569dp"
+        android:layout_height="0dp"
         android:layout_marginStart="1dp"
         android:layout_marginEnd="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchFavourites" />
 
     <TextView
         android:id="@+id/guest_message"
@@ -50,4 +51,14 @@
         android:layout_height="14dp"
         app:constraint_referenced_ids="guest_message, guest_btn"
         />
+
+    <SearchView
+        android:id="@+id/searchFavourites"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

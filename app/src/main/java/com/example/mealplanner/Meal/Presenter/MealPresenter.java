@@ -17,6 +17,8 @@ import com.google.android.material.datepicker.CalendarConstraints;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MealPresenter implements MealDetailsNetworkListener, IfMealIsFavouriteListener, IfMealAddedToPlan {
     private static final String TAG = "MealPresenterLog";
@@ -131,6 +133,21 @@ public class MealPresenter implements MealDetailsNetworkListener, IfMealIsFavour
     @Override
     public void onMealAddedToPlan(boolean isAdded) {
         view.setMealAddedToPlan(isAdded);
+    }
+
+
+    public String extractYouTubeId(String url) {
+        String videoId = null;
+        String pattern = "^(http(s)?:\\/\\/)?(www\\.)?(youtube\\.com|youtu\\.?be)\\/(watch\\?v=|embed\\/|v\\/|.+\\?v=)?([^&=%\\?]{11})";
+
+        Pattern compiledPattern = Pattern.compile(pattern);
+        Matcher matcher = compiledPattern.matcher(url);
+
+        if (matcher.find()) {
+            videoId = matcher.group(6);
+        }
+
+        return videoId;
     }
 
 
