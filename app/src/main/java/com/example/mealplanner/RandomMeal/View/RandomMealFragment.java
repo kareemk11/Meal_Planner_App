@@ -7,12 +7,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,29 +24,30 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.mealplanner.Database.MealsLocalDataSource;
 import com.example.mealplanner.Meal.View.MealActivity;
+import com.example.mealplanner.Model.UserSession;
 import com.example.mealplanner.RandomMeal.Presenter.RandomMealFragmentPresenter;
-import com.example.mealplanner.Network.Model.Meal.Meal;
-import com.example.mealplanner.Network.Model.Meal.MealResponse;
+import com.example.mealplanner.Model.Meal.Meal;
+import com.example.mealplanner.Model.Meal.MealResponse;
 import com.example.mealplanner.Model.Repository;
 import com.example.mealplanner.Network.MealsRemoteDataScource;
 import com.example.mealplanner.R;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
+import java.util.List;
 
-public class RandomMealFragment extends Fragment implements RandomMealView {
+
+public class RandomMealFragment extends Fragment implements RandomMealView , CardClickListener{
 
     private static final String TAG = "RandomMealFragment";
-    CardView mealCard;
-    FirebaseAuth mAuth;
-    FirebaseUser user;
-    ImageView mealThumbnail;
-    TextView mealName;
-    TextView mealCategory;
-    TextView mealArea;
     RandomMealFragmentPresenter presenter;
-    Meal meal;
+    private RecyclerView recyclerView;
+    private MealCardAdapter adapter;
+    private List<Meal> mealList;
+    TextView welcomeTextView;
+    boolean isGuest;
+
 
     public RandomMealFragment() {
         // Required empty public constructor
@@ -63,42 +68,40 @@ public class RandomMealFragment extends Fragment implements RandomMealView {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
+        isGuest = UserSession.getInstance().getGuest();
         super.onViewCreated(view, savedInstanceState);
+        mealList = new ArrayList<>();
+        adapter = new MealCardAdapter( mealList, getActivity(), this);
+        recyclerView = view.findViewById(R.id.mealRecyclerView);
+        welcomeTextView = view.findViewById(R.id.welcomeTxt);
+        recyclerView.setHasFixedSize(true);
 
-        mealThumbnail = view.findViewById(R.id.mealThumbnail);
-        mealName = view.findViewById(R.id.mealName);
-        mealCategory = view.findViewById(R.id.mealCategory);
-        mealArea = view.findViewById(R.id.mealArea);
-        mealCard = view.findViewById(R.id.mealCard);
-        presenter = new RandomMealFragmentPresenter(this, Repository.getInstance(MealsRemoteDataScource.getInstance(), MealsLocalDataSource.getInstance(getActivity())));
-        presenter.getRandomMeal();
-        mAuth = FirebaseAuth.getInstance();
-        user = mAuth.getCurrentUser();
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        mealCard.setOnClickListener(view1 -> {
-            presenter.onCardClick(meal);
-        });
 
-        //logoutBtn.setOnClickListener(view1 -> presenter.Logout());
+        recyclerView.setAdapter(adapter);
+        presenter = new RandomMealFragmentPresenter(this,
+                Repository.getInstance(MealsRemoteDataScource.getInstance(),
+                        MealsLocalDataSource.getInstance(getActivity())));
+
+        presenter.getMultiplesMeals();
+        if (isGuest) {
+            welcomeTextView.append(" login to enjoy offline mode");
+        }
+        else {
+            welcomeTextView.append(" " + UserSession.getInstance().getUsername());
+        }
+
+
+
 
     }
 
 
-    public void showRandomMeal(MealResponse mealResponse) {
-        meal = mealResponse.getMeals().get(0);
-        mealName.setText(meal.getName());
-        mealCategory.setText(meal.getCategory());
-        mealArea.setText(meal.getArea());
-
-
-        Glide.with(this)
-                .load(meal.getThumbnail())
-                .centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .placeholder(R.drawable.ic_launcher_background)
-                .error(R.drawable.ic_launcher_foreground)
-                .into(mealThumbnail);
-    }
 
     @Override
     public void showError(String errorMessage) {
@@ -112,4 +115,15 @@ public class RandomMealFragment extends Fragment implements RandomMealView {
         startActivity(intent);
     }
 
+    @Override
+    public void showMultiplesMeals(Meal meal) {
+        Log.i(TAG, "showMultiplesMeals: "+meal.getName());
+        mealList.add(meal);
+        adapter.setMeals(mealList);
+    }
+
+    @Override
+    public void onCardClick(Meal meal) {
+        presenter.onCardClick(meal);
+    }
 }

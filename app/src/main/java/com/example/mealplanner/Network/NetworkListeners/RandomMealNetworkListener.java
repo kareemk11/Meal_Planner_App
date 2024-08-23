@@ -1,9 +1,10 @@
 package com.example.mealplanner.Network.NetworkListeners;
 
-import com.example.mealplanner.Network.Model.Meal.MealResponse;
+import com.example.mealplanner.Model.Meal.Meal;
+import com.example.mealplanner.Model.Meal.MealResponse;
 
 public interface RandomMealNetworkListener {
 
-    void onRandomMealSuccess(MealResponse meal);
     void onRandomMealFailure(String errorMessage);
+    void onMealListSuccess(Meal meal);
 }

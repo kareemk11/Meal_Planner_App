@@ -2,7 +2,7 @@ package com.example.mealplanner.Network;
 import com.example.mealplanner.Network.Model.Area.AreaResponse;
 import com.example.mealplanner.Network.Model.Category.CategoryResponse;
 import com.example.mealplanner.Network.Model.Ingredient.IngredientResponse;
-import com.example.mealplanner.Network.Model.Meal.MealResponse;
+import com.example.mealplanner.Model.Meal.MealResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

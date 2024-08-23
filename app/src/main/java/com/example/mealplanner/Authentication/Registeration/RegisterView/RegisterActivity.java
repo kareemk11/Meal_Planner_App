@@ -105,8 +105,8 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView{
 
         registerBtn.setOnClickListener(view -> {
 
-            String username = usernameTxt.getText().toString();
-            registerPresenter.onRegisterClicked(emailTxt.getText().toString(), passTxt.getText().toString(), confirmPassTxt.getText().toString());
+            registerPresenter.onRegisterClicked(emailTxt.getText().toString(), passTxt.getText().toString(),
+                    confirmPassTxt.getText().toString(), usernameTxt.getText().toString());
         });
     }
     public void viewGoogleSignIn(Intent signInIntent) {

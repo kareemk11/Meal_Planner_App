@@ -1,6 +1,8 @@
 package com.example.mealplanner.HomeActivity.View;
 
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +15,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.mealplanner.Authentication.Login.LoginView.LoginActivity;
 import com.example.mealplanner.HomeActivity.Presenter.HomeActivityPresenter;
+import com.example.mealplanner.HomeActivity.Presenter.NetworkChangeReceiver;
 import com.example.mealplanner.Model.UserSession;
 import com.example.mealplanner.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -32,11 +35,16 @@ public class HomeActivity extends AppCompatActivity implements HomeActivityView{
     private GoogleSignInClient mGoogleSignInClient;
     private static final String TAG = "HomeActivityLog";
     private boolean isGuest;
+    private NetworkChangeReceiver networkChangeReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "onCreateHomeActivity: "+ UserSession.getInstance().getGuest());
         isGuest = UserSession.getInstance().getGuest();
         super.onCreate(savedInstanceState);
+        networkChangeReceiver = new NetworkChangeReceiver();
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeReceiver, filter);
         setContentView(R.layout.activity_home);
         logoutBtn = findViewById(R.id.logoutBtn);
         mAuth = FirebaseAuth.getInstance();
@@ -81,6 +89,14 @@ public class HomeActivity extends AppCompatActivity implements HomeActivityView{
                 .requestEmail()
                 .build();
         return gso;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (networkChangeReceiver != null) {
+            unregisterReceiver(networkChangeReceiver);
+        }
     }
 }
 

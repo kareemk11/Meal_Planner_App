@@ -29,6 +29,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.android.gms.common.api.ApiException;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 public class RegisterPresenter implements RegisterPresenterInterface {
 
@@ -88,53 +89,65 @@ public class RegisterPresenter implements RegisterPresenterInterface {
 
 
     @Override
-    public void onRegisterClicked(String email, String password, String confirmPassword) {
-        view.showProgress();
-        validateEmailAndPassword(email, password, confirmPassword);
-
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-
-            if (task.isSuccessful()) {
-                view.hideProgress();
-                onUserLoggedIn(mAuth.getCurrentUser());
-            } else {
-                view.hideProgress();
-                view.showError(task.getException().getMessage());
-            }
-
-        });
-        view.hideProgress();
-    }
-
-
-    public void validateEmailAndPassword(String email, String password, String confirmPassword) {
-        boolean isValidEmail = Patterns.EMAIL_ADDRESS.matcher(email).matches();
-        boolean isValidPassword = password.length() >= 8 && password.matches(".*[!@#$%^&*].*");
-        if (TextUtils.isEmpty(email)) {
-            view.hideProgress();
-            view.showError("Please Enter Email");
-
-
-        } else if (TextUtils.isEmpty(password)) {
-            view.hideProgress();
-            view.showError("Please Enter Password");
-
-        } else if (!isValidEmail) {
-            view.hideProgress();
-            view.showError("Invalid email address");
-
-
-        } else if (!isValidPassword) {
-
-            view.hideProgress();
-            view.showError("Password must be at least 8 characters long and contain at least one special character");
-
-        } else if (!password.equals(confirmPassword)) {
-            view.hideProgress();
-            view.showError("Passwords do not match");
+    public void onRegisterClicked(String email, String password, String confirmPassword, String username) {
+        if (!validateEmailAndPassword(email, password, confirmPassword, username)) {
+            return;
         }
 
+        view.showProgress();
+
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+            view.hideProgress();
+
+            if (task.isSuccessful()) {
+                FirebaseUser user = mAuth.getCurrentUser();
+                if (user != null) {
+                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                            .setDisplayName(username)
+                            .build();
+
+                    user.updateProfile(profileUpdates).addOnCompleteListener(profileUpdateTask -> {
+                        if (profileUpdateTask.isSuccessful()) {
+                            onUserLoggedIn(user);
+                        } else {
+                            view.showError(profileUpdateTask.getException().getMessage());
+                        }
+                    });
+                }
+            } else {
+                view.showError(task.getException().getMessage());
+            }
+        });
     }
+
+    public boolean validateEmailAndPassword(String email, String password, String confirmPassword, String username) {
+        boolean isValidEmail = Patterns.EMAIL_ADDRESS.matcher(email).matches();
+        boolean isValidPassword = password.length() >= 8 && password.matches(".*[!@#$%^&*].*");
+
+        if (TextUtils.isEmpty(email)) {
+            view.showError("Please Enter Email");
+            return false;
+        } else if (TextUtils.isEmpty(password)) {
+            view.showError("Please Enter Password");
+            return false;
+        } else if (!isValidEmail) {
+            view.showError("Invalid email address");
+            return false;
+        } else if (!isValidPassword) {
+            view.showError("Password must be at least 8 characters long and contain at least one special character");
+            return false;
+        } else if (!password.equals(confirmPassword)) {
+            view.showError("Passwords do not match");
+            return false;
+        } else if (TextUtils.isEmpty(username)) {
+            view.showError("Please Enter a Username");
+            return false;
+        }
+
+        return true;
+    }
+
+
 
     public void onUserLoggedIn(FirebaseUser currentUser) {
         User user = new User();
@@ -150,8 +163,10 @@ public class RegisterPresenter implements RegisterPresenterInterface {
         userSession.setUsername(currentUser.getDisplayName());
 
 
+
         repository.insertUser(user);
 
+        view.showProgress();
         view.navigateToMainScreen();
     }
 

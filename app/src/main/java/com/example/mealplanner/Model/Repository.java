@@ -21,6 +21,7 @@ import com.example.mealplanner.Network.MealsRemoteDataScource;
 import com.example.mealplanner.Network.NetworkListeners.ListedMeals.MealsByCategoryNetworkListener;
 import com.example.mealplanner.Network.NetworkListeners.ListedMeals.MealsByMainIngredientNetworkListener;
 import com.example.mealplanner.Network.NetworkListeners.RandomMealNetworkListener;
+import com.example.mealplanner.RandomMeal.Presenter.RandomMealFragmentPresenter;
 
 import java.util.List;
 
@@ -106,5 +107,11 @@ public class Repository {
 
     public void isMealAddedToPlan(String id, String uid, IfMealAddedToPlan listener) {
         mealsLocalDataSource.getDateMealByMealIdAndUserId(id, uid, listener);
+    }
+
+    public void getMultiplesMeals(RandomMealNetworkListener listener) {
+
+        mealsRemoteDataScource.getMultipleRandomMeals(listener);
+
     }
 }
