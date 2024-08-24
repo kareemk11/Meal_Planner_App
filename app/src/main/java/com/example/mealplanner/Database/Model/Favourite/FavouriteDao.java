@@ -20,6 +20,9 @@ public interface FavouriteDao {
 
     @Query("SELECT * FROM favorite WHERE mealId = :mealId AND userId = :userId")
     FavouriteMeal getFavoriteByMealIdAndUserId(String mealId, String userId);
+    // Get all favorite meals for a specific user
+    @Query("SELECT * FROM favorite WHERE userId = :userId")
+    List<FavouriteMeal> getFavoriteMealsByUserId(String userId);
 
     // Delete a favorite entry
     @Delete

@@ -11,4 +11,7 @@ public interface MealsPlanView {
     void navigateToMealDetails(LocalMeal meal);
 
     void navigateToLoginScreen();
+
+    void displayToastSuccess();
+    void displayToastError(String message);
 }

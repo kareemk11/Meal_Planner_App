@@ -17,11 +17,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.mealplanner.Authentication.Login.LoginView.LoginActivity;
 import com.example.mealplanner.Database.MealsLocalDataSource;
 import com.example.mealplanner.Meal.View.MealActivity;
 import com.example.mealplanner.Model.UserSession;
@@ -47,6 +49,7 @@ public class RandomMealFragment extends Fragment implements RandomMealView , Car
     private List<Meal> mealList;
     TextView welcomeTextView;
     boolean isGuest;
+    Button loginBtn;
 
 
     public RandomMealFragment() {
@@ -71,6 +74,11 @@ public class RandomMealFragment extends Fragment implements RandomMealView , Car
 
         isGuest = UserSession.getInstance().getGuest();
         super.onViewCreated(view, savedInstanceState);
+        loginBtn = view.findViewById(R.id.guest_btn);
+        if (isGuest) {
+            loginBtn.setVisibility(View.VISIBLE);
+        }
+        loginBtn.setOnClickListener(view1 -> presenter.onGuestBtnClicked());
         mealList = new ArrayList<>();
         adapter = new MealCardAdapter( mealList, getActivity(), this);
         recyclerView = view.findViewById(R.id.mealRecyclerView);
@@ -120,6 +128,14 @@ public class RandomMealFragment extends Fragment implements RandomMealView , Car
         Log.i(TAG, "showMultiplesMeals: "+meal.getName());
         mealList.add(meal);
         adapter.setMeals(mealList);
+    }
+
+    @Override
+    public void navigateToLoginScreen() {
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        getActivity().finish();
     }
 
     @Override

@@ -79,4 +79,6 @@
     <string name="meal_added">Meal Added</string>
     <string name="hi">Hi ,</string>
     <string name="random_meals">Daily Inspiration</string>
+    <string name="back_up">Back up</string>
+    <string name="sync">Sync</string>
 </resources>

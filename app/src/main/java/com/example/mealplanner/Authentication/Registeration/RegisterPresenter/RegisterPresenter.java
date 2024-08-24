@@ -37,7 +37,6 @@ public class RegisterPresenter implements RegisterPresenterInterface {
     private RegisterView view;
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
-    private Context context;
     UserSession userSession;
     private Repository repository;
 
@@ -161,6 +160,7 @@ public class RegisterPresenter implements RegisterPresenterInterface {
         userSession.setUid(currentUser.getUid());
         userSession.setEmail(currentUser.getEmail());
         userSession.setUsername(currentUser.getDisplayName());
+        userSession.setGuest(false);
 
 
 

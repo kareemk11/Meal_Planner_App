@@ -1,11 +1,15 @@
 package com.example.mealplanner.FavouriteMeals.Presenter;
 
+import android.util.Log;
+
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
+import com.example.mealplanner.DataBackup.FirebaseSyncManager;
 import com.example.mealplanner.Database.Model.Favourite.FavouriteMeal;
 import com.example.mealplanner.Database.Model.LocalMeal.LocalMeal;
+import com.example.mealplanner.Model.Meal.Meal;
 import com.example.mealplanner.Model.Repository;
 import com.example.mealplanner.Model.UserSession;
 import com.example.mealplanner.FavouriteMeals.View.FavouriteMealsView;
@@ -13,17 +17,19 @@ import com.example.mealplanner.FavouriteMeals.View.FavouriteMealsView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FavouriteMealsPresenter {
+public class FavouriteMealsPresenter implements SaveMealListener, DatabaseEventListener,MealLoadListener {
 
     private static final String TAG = "SavedMealsPresenter";
     private FavouriteMealsView view;
     private Repository repository;
     private List<LocalMeal> localMeals;
+    FirebaseSyncManager firebaseSyncManager;
 
     public FavouriteMealsPresenter(FavouriteMealsView view, Repository repository) {
         this.view = view;
         this.repository = repository;
         this.localMeals = new ArrayList<>();
+        firebaseSyncManager = FirebaseSyncManager.getInstance();
     }
 
     public void getSavedMeals(LifecycleOwner owner) {
@@ -67,5 +73,55 @@ public class FavouriteMealsPresenter {
 
     public void onGuestBtnClicked() {
         view.navigateToLoginScreen();
+    }
+
+    public void onBackupClicked() {
+        Log.i(TAG, "onBackupClicked: ");
+         repository.getFavouriteMealsByUserId(UserSession.getInstance().getUid(), this);
+
+    }
+
+    private void backUpData(List<FavouriteMeal> favouriteMeals) {
+        Log.i(TAG, "backUpData: "+favouriteMeals);
+        firebaseSyncManager.saveFavoriteMeals(favouriteMeals, this);
+    }
+
+    public void onSyncClicked() {
+        firebaseSyncManager.loadMeals(this);
+    }
+
+    @Override
+    public void onSaveMealSuccess() {
+        view.displayToastSuccess();
+    }
+
+    @Override
+    public void onSaveMealFailure(String errorMessage) {
+
+        view.displayToastError(errorMessage);
+    }
+
+    @Override
+    public void onDataSuccess(List<FavouriteMeal> meals) {
+        backUpData(meals);
+    }
+
+    @Override
+    public void onDataFailure(String errorMessage) {
+
+    }
+
+    @Override
+    public void onMealsLoaded(List<FavouriteMeal> meals) {
+        for(FavouriteMeal meal : meals)
+        {
+            repository.insertFavoriteMealFromFirebase(meal);
+        }
+
+    }
+
+    @Override
+    public void onMealLoadFailed(String errorMessage) {
+
     }
 }

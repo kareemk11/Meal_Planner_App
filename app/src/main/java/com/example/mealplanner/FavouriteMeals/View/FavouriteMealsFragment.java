@@ -13,8 +13,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mealplanner.Authentication.Login.LoginView.LoginActivity;
 import com.example.mealplanner.Database.MealsLocalDataSource;
@@ -25,7 +27,6 @@ import com.example.mealplanner.Model.UserSession;
 import com.example.mealplanner.Network.MealsRemoteDataScource;
 import com.example.mealplanner.R;
 import com.example.mealplanner.FavouriteMeals.Presenter.FavouriteMealsPresenter;
-import com.google.android.material.search.SearchBar;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -45,6 +46,8 @@ public class FavouriteMealsFragment extends Fragment implements FavouriteMealsVi
     SearchView searchFavourites;
     private boolean isGuest;
     Comparator<LocalMeal> sortByName;
+    Button backup;
+    Button sync;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -56,6 +59,8 @@ public class FavouriteMealsFragment extends Fragment implements FavouriteMealsVi
         if (isGuest) {
             view.findViewById(R.id.mealPlanGroup).setVisibility(View.VISIBLE);
             view.findViewById(R.id.searchFavourites).setVisibility(View.GONE);
+            view.findViewById(R.id.backupBtn).setVisibility(View.GONE);
+            view.findViewById(R.id.syncBtn).setVisibility(View.GONE);
             guestMessage = view.findViewById(R.id.guest_message);
             guestBtn = view.findViewById(R.id.guest_btn);
             guestBtn.setOnClickListener(view1 -> {
@@ -63,6 +68,14 @@ public class FavouriteMealsFragment extends Fragment implements FavouriteMealsVi
             });
         }
         else{
+            backup = view.findViewById(R.id.backupBtn);
+            sync = view.findViewById(R.id.syncBtn);
+            backup.setOnClickListener(view1 ->
+            {
+                presenter.onBackupClicked();
+                Log.i(TAG, "onViewCreated: backup clicked");
+            });
+            sync.setOnClickListener(view1 -> presenter.onSyncClicked());
             searchFavourites = view.findViewById(R.id.searchFavourites);
             view.findViewById(R.id.mealPlanGroup).setVisibility(View.GONE);
             mealsRecyclerView = view.findViewById(R.id.favouriteMealsRecyclerView);
@@ -170,4 +183,15 @@ public class FavouriteMealsFragment extends Fragment implements FavouriteMealsVi
         startActivity(intent);
         getActivity().finish();
     }
+
+    @Override
+    public void displayToastSuccess() {
+        Toast.makeText(getActivity(), "Meals have been backed up successfully", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void displayToastError(String errorMessage) {
+        Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
+    }
+
 }
