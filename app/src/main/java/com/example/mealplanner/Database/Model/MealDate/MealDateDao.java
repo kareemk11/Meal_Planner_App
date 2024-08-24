@@ -23,6 +23,10 @@ public interface MealDateDao {
     @Query("SELECT * FROM meal_date WHERE userId = :userId")
     LiveData<List<MealDate>> getDatedMealsByUserId(String userId);
 
+    @Query("SELECT * FROM meal_date WHERE userId = :userId")
+    List<MealDate> getDatedMealsByUserIdForFirebase(String userId);
+
+
 
     @Delete
     void deleteMealDate(MealDate mealDate);

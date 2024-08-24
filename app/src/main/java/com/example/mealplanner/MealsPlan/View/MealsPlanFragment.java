@@ -14,8 +14,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mealplanner.Authentication.Login.LoginView.LoginActivity;
 import com.example.mealplanner.Database.MealsLocalDataSource;
@@ -44,6 +46,8 @@ public class MealsPlanFragment extends Fragment implements MealsPlanView, MealsB
     private static final String TAG = "MealsPlanFragmentLog";
     private boolean isGuest;
     public Comparator<LocalMeal> sortByData;
+    Button backup;
+    Button sync;
 
 
 
@@ -56,6 +60,8 @@ public class MealsPlanFragment extends Fragment implements MealsPlanView, MealsB
         if (isGuest) {
             view.findViewById(R.id.mealPlanGroup).setVisibility(View.VISIBLE);
             view.findViewById(R.id.searchMealPlan).setVisibility(View.GONE);
+            view.findViewById(R.id.backupBtn).setVisibility(View.GONE);
+            view.findViewById(R.id.syncBtn).setVisibility(View.GONE);
             guestMessage = view.findViewById(R.id.guest_message);
             guestBtn = view.findViewById(R.id.guest_btn);
             guestBtn.setOnClickListener(view1 -> {
@@ -67,6 +73,15 @@ public class MealsPlanFragment extends Fragment implements MealsPlanView, MealsB
         {
             view.findViewById(R.id.mealPlanGroup).setVisibility(View.GONE);
             searchMealPlan = view.findViewById(R.id.searchMealPlan);
+            backup = view.findViewById(R.id.backupBtn);
+            sync = view.findViewById(R.id.syncBtn);
+
+            backup.setOnClickListener(view1 ->
+            {
+                mealsPlanPresenter.onBackupClicked();
+                Log.i(TAG, "onViewCreated: backup clicked");
+            });
+            sync.setOnClickListener(view1 -> mealsPlanPresenter.onSyncClicked());
             mealsPlanRecyclerView = view.findViewById(R.id.mealsByDateRecyclerView);
             recyclerViewInit();
             mealsPlanPresenter.getMealsPlan(this);
@@ -124,13 +139,12 @@ public class MealsPlanFragment extends Fragment implements MealsPlanView, MealsB
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_meals_plan, container, false);
     }
 
@@ -171,5 +185,17 @@ public class MealsPlanFragment extends Fragment implements MealsPlanView, MealsB
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         getActivity().finish();
+    }
+
+    @Override
+    public void displayToastSuccess() {
+        Toast.makeText(getActivity(), "Meals have been backed up successfully", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void displayToastError(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+
+
     }
 }

@@ -4,8 +4,10 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
+import com.example.mealplanner.DataBackup.FirebaseSyncManager;
 import com.example.mealplanner.Database.Model.LocalMeal.LocalMeal;
 import com.example.mealplanner.Database.Model.MealDate.MealDate;
+import com.example.mealplanner.FavouriteMeals.Presenter.SaveMealListener;
 import com.example.mealplanner.MealsPlan.View.MealsPlanView;
 import com.example.mealplanner.Model.Repository;
 import com.example.mealplanner.Model.UserSession;
@@ -13,16 +15,18 @@ import com.example.mealplanner.Model.UserSession;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MealsPlanPresenter {
+public class MealsPlanPresenter implements DataBaseDatedMealsListener, SaveMealListener, DatedMealsLoadedListener {
 
     private MealsPlanView view;
     private Repository repository;
     private List <LocalMeal> localMeals;
+    FirebaseSyncManager firebaseSyncManager;
 
     public MealsPlanPresenter(MealsPlanView view, Repository repository) {
         this.view = view;
         this.repository = repository;
         this.localMeals = new ArrayList<>();
+        firebaseSyncManager = FirebaseSyncManager.getInstance();
     }
 
     public void getMealsPlan(LifecycleOwner owner) {
@@ -73,5 +77,46 @@ public class MealsPlanPresenter {
 
     public void onGuestBtnClicked() {
         view.navigateToLoginScreen();
+    }
+
+    public void onSyncClicked() {
+        firebaseSyncManager.loadDatedMeals(this);
+    }
+
+    public void onBackupClicked() {
+        repository.getDatedMealsByUserIdForFirebase(UserSession.getInstance().getUid(),this);
+    }
+
+    @Override
+    public void onDatedMealsSuccess(List<MealDate> meals) {
+        firebaseSyncManager.saveDatedMeals(meals,this);
+    }
+
+    @Override
+    public void onDatedMealsLoadFailed(String errorMessage) {
+
+    }
+
+    @Override
+    public void onSaveMealSuccess() {
+        view.displayToastSuccess();
+    }
+
+    @Override
+    public void onSaveMealFailure(String errorMessage) {
+        view.displayToastError(errorMessage);
+
+    }
+
+    @Override
+    public void onMealsLoaded(List<MealDate> meals) {
+        for(MealDate meal : meals){
+            repository.insertMealDateForFirebase(meal);
+        }
+    }
+
+    @Override
+    public void onMealLoadFailed(String errorMessage) {
+
     }
 }

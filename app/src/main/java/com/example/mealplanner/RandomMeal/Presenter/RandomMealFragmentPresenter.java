@@ -44,4 +44,8 @@ public class RandomMealFragmentPresenter implements RandomMealNetworkListener {
     public void getMultiplesMeals() {
       repository.getMultiplesMeals(this);
     }
+
+    public void onGuestBtnClicked() {
+        view.navigateToLoginScreen();
+    }
 }

@@ -11,4 +11,5 @@ public interface RandomMealView {
     void navigateToMealActivity(Meal meal);
     void showMultiplesMeals(Meal meal);
 
+    void navigateToLoginScreen();
 }

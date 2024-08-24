@@ -15,8 +15,10 @@ import com.example.mealplanner.Database.Model.MealDate.MealDate;
 import com.example.mealplanner.Database.Model.MealDate.MealDateDao;
 import com.example.mealplanner.Database.Model.User.User;
 import com.example.mealplanner.Database.Model.User.UserDao;
+import com.example.mealplanner.FavouriteMeals.Presenter.DatabaseEventListener;
 import com.example.mealplanner.Meal.View.IfMealAddedToPlan;
 import com.example.mealplanner.Meal.View.IfMealIsFavouriteListener;
+import com.example.mealplanner.MealsPlan.Presenter.DataBaseDatedMealsListener;
 
 import java.util.List;
 
@@ -150,6 +152,33 @@ public class MealsLocalDataSource {
             else {
                 listener.onMealAddedToPlan(false);
             }
+        }).start();
+    }
+
+    public void getFavouriteMealsByUserId(String userId , DatabaseEventListener listener) {
+        new Thread(() -> {
+            List<FavouriteMeal> favorites = favouriteDao.getFavoriteMealsByUserId(userId);
+            listener.onDataSuccess(favorites);
+        }).start();
+    }
+
+    public void insertFavoriteMealFromFirebase(FavouriteMeal meal) {
+        new Thread(() -> {
+            favouriteDao.insertFavorite(meal);
+        }).start();
+    }
+
+
+    public void getDatedMealsByUserIdForFirebase(String uid, DataBaseDatedMealsListener listener) {
+        new Thread(() -> {
+            List<MealDate> meals = mealDateDao.getDatedMealsByUserIdForFirebase(uid);
+            listener.onDatedMealsSuccess(meals);
+        }).start();
+    }
+
+    public void insertMealDateForFirebase(MealDate meal) {
+        new Thread(() -> {
+            mealDateDao.insertMealDate(meal);
         }).start();
     }
 }

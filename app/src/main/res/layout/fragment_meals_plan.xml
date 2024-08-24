@@ -37,8 +37,9 @@
         android:id="@+id/guest_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="308dp"
         android:text="@string/login"
+        android:textColor="@color/myColorBackground"
         app:backgroundTint="@color/myColorSurface"
         app:layout_constraintEnd_toEndOf="@+id/guest_message"
         app:layout_constraintHorizontal_bias="0.497"
@@ -56,10 +57,34 @@
         android:id="@+id/searchMealPlan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="112dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/backupBtn"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/back_up"
+        android:textColor="@color/myColorBackground"
+        app:backgroundTint="@color/myColorSurface"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/syncBtn"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="3dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/sync"
+        android:textColor="@color/myColorBackground"
+        app:backgroundTint="@color/myColorSurface"
+        app:layout_constraintBottom_toTopOf="@+id/searchMealPlan"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

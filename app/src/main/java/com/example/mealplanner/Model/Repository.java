@@ -9,9 +9,12 @@ import com.example.mealplanner.Database.Model.Favourite.FavouriteMeal;
 import com.example.mealplanner.Database.Model.LocalMeal.LocalMeal;
 import com.example.mealplanner.Database.Model.MealDate.MealDate;
 import com.example.mealplanner.Database.Model.User.User;
+import com.example.mealplanner.FavouriteMeals.Presenter.DatabaseEventListener;
 import com.example.mealplanner.Meal.Presenter.MealPresenter;
 import com.example.mealplanner.Meal.View.IfMealAddedToPlan;
 import com.example.mealplanner.Meal.View.IfMealIsFavouriteListener;
+import com.example.mealplanner.MealsPlan.Presenter.DataBaseDatedMealsListener;
+import com.example.mealplanner.MealsPlan.Presenter.MealsPlanPresenter;
 import com.example.mealplanner.Network.NetworkListeners.MealDetailsNetworkListener;
 import com.example.mealplanner.Network.NetworkListeners.ListedMeals.MealsByAreaNetworkListener;
 import com.example.mealplanner.Network.NetworkListeners.SearchCategory.AreaNetworkListener;
@@ -113,5 +116,22 @@ public class Repository {
 
         mealsRemoteDataScource.getMultipleRandomMeals(listener);
 
+    }
+
+    public void getFavouriteMealsByUserId(String userId, DatabaseEventListener listener)
+    {
+         mealsLocalDataSource.getFavouriteMealsByUserId(userId, listener);
+    }
+
+    public void insertFavoriteMealFromFirebase(FavouriteMeal meal) {
+        mealsLocalDataSource.insertFavoriteMealFromFirebase(meal);
+    }
+
+    public void getDatedMealsByUserIdForFirebase(String uid, DataBaseDatedMealsListener listener) {
+        mealsLocalDataSource.getDatedMealsByUserIdForFirebase(uid , listener);
+    }
+
+    public void insertMealDateForFirebase(MealDate meal) {
+        mealsLocalDataSource.insertMealDateForFirebase(meal);
     }
 }
