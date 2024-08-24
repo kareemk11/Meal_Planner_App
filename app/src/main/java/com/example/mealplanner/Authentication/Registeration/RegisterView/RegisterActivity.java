@@ -173,14 +173,3 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView{
 
 
 }
-
-//    public void transferToApp(FirebaseUser user) {
-//        if (user != null) {
-//            startActivity(new Intent(RegisterActivity.this, MainActivity.class));
-//            finish();
-//        } else {
-//            Toast.makeText(RegisterActivity.this, "Authentication Failed.", Toast.LENGTH_SHORT).show();
-//
-//        }
-//
-//    }

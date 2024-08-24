@@ -17,15 +17,14 @@ public interface IngredientDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     long insertIngredient(LocalIngredient ingredient);
 
-    // Get ingredients by mealId
+
     @Query("SELECT * FROM ingredient WHERE mealId = :mealId")
     LiveData<List<LocalIngredient>> getIngredientsByMealId(long mealId);
 
-    // Update ingredient details
+
     @Update
     void updateIngredient(LocalIngredient ingredient);
 
-    // Delete an ingredient
     @Delete
     void deleteIngredient(LocalIngredient ingredient);
 }

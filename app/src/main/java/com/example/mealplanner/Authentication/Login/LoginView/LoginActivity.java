@@ -157,26 +157,4 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         return gso;
     }
 
-//    private void loginUserAndNavigate(FirebaseUser currentUser) {
-//        User user = new User();
-//        user.setEmail(currentUser.getEmail());
-//        user.setUsername(currentUser.getDisplayName());
-//        user.setUserId(currentUser.getUid());
-//        user.setGoogleUserId(currentUser.getProviderId());
-//
-//
-//        userSession = UserSession.getInstance();
-//        userSession.setUid(currentUser.getUid());
-//        userSession.setEmail(currentUser.getEmail());
-//        userSession.setUsername(currentUser.getDisplayName());
-//
-//
-//        Repository.getInstance(MealsRemoteDataScource.getInstance(),
-//                MealsLocalDataSource.getInstance(getApplicationContext())).insertUser(user);
-//
-//
-//        Intent homeIntent = new Intent(this, HomeActivity.class);
-//        startActivity(homeIntent);
-//        finish();
-//    }
 }

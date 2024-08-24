@@ -42,7 +42,7 @@
             android:layout_margin="16dp"
             android:ellipsize="end"
             android:maxLines="2"
-            android:text="Category Name"
+            android:text="@string/category"
             android:textColor="@android:color/white"
             android:textSize="24sp"
             android:textStyle="bold"

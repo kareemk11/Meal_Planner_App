@@ -25,7 +25,7 @@ public class FavouriteMeal {
     public String userId;
     public String mealId;
 
-    // Getters and Setters
+
     public int getFavoriteId() {
         return favoriteId;
     }

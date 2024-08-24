@@ -10,5 +10,5 @@ public interface RegisterView {
 
     void viewGoogleSignIn(Intent signInIntent);
 
-//    void transferToApp(FirebaseUser user);
+
 }

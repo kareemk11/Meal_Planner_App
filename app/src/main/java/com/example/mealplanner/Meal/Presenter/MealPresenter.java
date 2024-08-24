@@ -151,10 +151,5 @@ public class MealPresenter implements MealDetailsNetworkListener, IfMealIsFavour
     }
 
 
-//    public void removeMealFromFavourites(Meal meal) {
-//        FavouriteMeal favouriteMeal = new FavouriteMeal();
-//        favouriteMeal.setMealId(meal.getIdMeal());
-//        favouriteMeal.setUserId(userSession.getUid());
-//        repository.deleteFavorite(favouriteMeal);
-//    }
+
 }

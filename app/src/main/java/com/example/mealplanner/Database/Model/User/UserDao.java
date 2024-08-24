@@ -11,7 +11,6 @@ import androidx.room.Update;
 @Dao
 public interface UserDao {
 
-    // Insert a new user and return the auto-generated userId
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     long insertUser(User user);
 

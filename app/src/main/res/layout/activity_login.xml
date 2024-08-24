@@ -37,7 +37,7 @@
             style="@style/CustomTextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="Email"
+            android:hint="@string/email"
             android:inputType="textEmailAddress"
             android:textColor="@color/black"
             android:textColorHint="@color/white" />
@@ -59,7 +59,7 @@
             android:id="@+id/passTxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"
+            android:hint="@string/password"
             android:inputType="textPassword"
             android:textColor="@color/black"
             android:textColorHint="@color/white" />

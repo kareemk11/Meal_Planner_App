@@ -6,7 +6,7 @@ public class IngredientResponse {
 
         private List<Ingredient> meals;
 
-        // Getters and Setters
+
         public List<Ingredient> getMeals() {
             return meals;
         }

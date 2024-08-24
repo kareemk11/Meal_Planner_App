@@ -26,7 +26,7 @@ public class MealDate {
     public String mealId;
     public String date;
 
-    // Getters and Setters
+
     public int getMealDateId() {
         return mealDateId;
     }
